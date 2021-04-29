@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/EnvCalc.iml" filepath="$PROJECT_DIR$/.idea/EnvCalc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/src/Backend/envcalc.iml" filepath="$PROJECT_DIR$/src/Backend/envcalc.iml" />
     </modules>
   </component>
 </project>
