@@ -6,7 +6,7 @@ on:
     branches: [ frontend/main ]
 
 jobs:
-  'Build & Test':
+  BuildAndTest:
     runs-on: windows-latest
     defaults:
       run:
