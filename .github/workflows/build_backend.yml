@@ -21,7 +21,7 @@ jobs:
       with:
         java-version: 16
     - name: Checkout master branch
-      run: git checkout master
+      run: git checkout backend/main
     - name: Prepare release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
