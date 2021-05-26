@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Viewmodels\" />
+    <PackageReference Include="Catel.MVVM" Version="5.12.16" />
   </ItemGroup>
 
 </Project>
