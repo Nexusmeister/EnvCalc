@@ -6,4 +6,8 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\EnvCalc.Core\EnvCalc.Tools\EnvCalc.Tools.csproj" />
+  </ItemGroup>
+
 </Project>
