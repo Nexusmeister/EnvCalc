@@ -132,11 +132,11 @@
 				</executions>
 				<configuration>
 					<!--suppress UnresolvedMavenProperty -->
-					<username>${env.DOCKER_USER}</username>
+					<username>token</username>
 					<!--suppress UnresolvedMavenProperty -->
 					<password>${env.DOCKER_PASSWORD}</password>
-					<repository>registry.git.z-core.de/ziegler/${project.artifactId}</repository>
-					<tag>${project.version}</tag>
+					<repository>docker.pkg.github.com/Nexusmeister/EnvCalc</repository>
+					<tag>lastest</tag>
 				</configuration>
 			</plugin>
 			<plugin>
