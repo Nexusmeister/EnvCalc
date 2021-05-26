@@ -20,6 +20,9 @@
 		<developerConnection>scm:git:https://github.com/Nexusmeister/${project.artifactId}</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
+	<build>
+		<finalName>envCalcBackend</finalName>
+	</build>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
