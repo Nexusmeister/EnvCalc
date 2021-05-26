@@ -28,34 +28,41 @@ namespace EnvCalc.Tools
             switch (logEvent.Level)
             {
                 case LogEventLevel.Verbose:
-                    WriteToFile("Verbose", logEvent.MessageTemplate.Text);
+                    WriteToFile("Verbose", logEvent);
                     break;
                 case LogEventLevel.Debug:
-                    WriteToFile("Debug", logEvent.MessageTemplate.Text);
+                    WriteToFile("Debug", logEvent);
                     break;
                 case LogEventLevel.Information:
-                    WriteToFile("Info", logEvent.MessageTemplate.Text);
+                    WriteToFile("Info", logEvent);
                     break;
                 case LogEventLevel.Warning:
-                    WriteToFile("Warning", logEvent.MessageTemplate.Text);
+                    WriteToFile("Warning", logEvent);
                     break;
                 case LogEventLevel.Error:
-                    WriteToFile("ERROR", logEvent.MessageTemplate.Text);
-                    WriteToFile("ERROR", logEvent.Exception.ToString());
+                    WriteToFile("ERROR", logEvent);
+                    WriteExceptionToFile("ERROR", logEvent);
                     break;
                 case LogEventLevel.Fatal:
-                    WriteToFile("FATAL", logEvent.MessageTemplate.Text);
-                    WriteToFile("FATAL", logEvent.Exception.ToString());
+                    WriteToFile("FATAL", logEvent);
+                    WriteExceptionToFile("FATAL", logEvent);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
         }
 
-        private void WriteToFile(string level, string logMessage)
+        private void WriteToFile(string level, LogEvent log)
         {
             var sw = File.AppendText(AppSettings.Loggerpfad);
-            sw.WriteLine($"[{level}] {logMessage}");
+            sw.WriteLine($"[{level}] [{log.Timestamp}] {log.MessageTemplate.Text}");
+            sw.Close();
+        }
+
+        private void WriteExceptionToFile(string level, LogEvent log)
+        {
+            var sw = File.AppendText(AppSettings.Loggerpfad);
+            sw.WriteLine($"[{level}] [{log.Timestamp.ToString()}] {log.Exception}");
             sw.Close();
         }
     }
