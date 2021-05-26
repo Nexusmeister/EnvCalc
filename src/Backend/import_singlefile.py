@@ -1,7 +1,7 @@
 import json, os
 from elasticsearch import Elasticsearch
 
-es = Elasticsearch(["https://elastic:KF22oSBnjtQDdgqmwSA68@elasticsearch.z-core.de:443"])
+es = Elasticsearch(["https://host:token@elasticsearch.z-core.de:443"])
 
 file = open('probas.json', 'r')
 lines = file.readlines()
