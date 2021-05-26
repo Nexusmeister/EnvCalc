@@ -10,4 +10,8 @@
     <ProjectReference Include="..\EnvCalc.Core\EnvCalc.Tools\EnvCalc.Tools.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Viewmodels\" />
+  </ItemGroup>
+
 </Project>
