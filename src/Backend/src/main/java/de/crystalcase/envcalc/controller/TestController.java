@@ -5,6 +5,7 @@ import de.crystalcase.envcalc.services.CategoryService;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.SearchPage;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,4 +24,8 @@ public class TestController {
     private List<Category> getAll(){
         return categoryService.getCategories();
     }
+
+    @GetMapping(value = "/test")
+    @ResponseBody
+    private String test(){ return "Test successful"; }
 }
