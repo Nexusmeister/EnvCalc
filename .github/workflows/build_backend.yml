@@ -26,7 +26,7 @@ jobs:
           distribution: 'adopt'
       - run: mvn -Dspring.profiles.active=build --batch-mode --update-snapshots verify 
       - name: Login
-        run: docker login docker.pkg.github.com -u ${{ github.actor }} -p ${{ secret.GITHUB_TOKEN }}
+        run: docker login docker.pkg.github.com -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
       - name: Build image 
         run: docker build . --file Dockerfile --tag docker.pkg.github.com/nexusmeister/envcalc/envcalc-backend:latest
       - name: Push image
