@@ -36,5 +36,7 @@ jobs:
       - name: Build container image
         uses: docker/build-push-action@v2
         with:
+          file: src/Backend/Dockerfile
+          context: ./src/Backend
           push: true
           tags: docker.pkg.github.com/nexusmeister/envcalc/envcalc-backend:latest
