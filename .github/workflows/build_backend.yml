@@ -22,7 +22,7 @@ jobs:
         with:
           java-version: '16'
           distribution: 'adopt'
-      - run: cd src && ls && mvn -Dspring.profiles.active=build --batch-mode --update-snapshots verify 
+      - run: cd src/Backend && ls && mvn -Dspring.profiles.active=build --batch-mode --update-snapshots verify 
       - name: Check out the repo
         uses: actions/checkout@v2
       - name: Log in to GitHub Docker Registry
