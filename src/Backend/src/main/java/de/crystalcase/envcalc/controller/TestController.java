@@ -25,6 +25,7 @@ public class TestController {
         return categoryService.getCategories();
     }
 
+
     @GetMapping(value = "/test")
     @ResponseBody
     private String test(){ return "Test successful"; }
