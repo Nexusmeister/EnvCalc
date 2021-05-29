@@ -1,6 +1,6 @@
 ﻿using Catel.MVVM;
 
-namespace EnvCalc.Frontend.Viewmodels
+namespace EnvCalc.Frontend.ViewModels
 {
     public class LieferantViewModel : ViewModelBase
     {
