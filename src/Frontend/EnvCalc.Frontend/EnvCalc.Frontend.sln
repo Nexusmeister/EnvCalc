@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EnvCalc.Frontend", "EnvCalc
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EnvCalc.Core", "EnvCalc.Core", "{24CE0FB7-5395-4B22-942F-71BD41BBBEC1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnvCalc.Tools", "EnvCalc.Core\EnvCalc.Tools\EnvCalc.Tools.csproj", "{5EED58C5-6A5A-41F1-96D7-62AA11287B3A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EnvCalc.Tools", "EnvCalc.Core\EnvCalc.Tools\EnvCalc.Tools.csproj", "{5EED58C5-6A5A-41F1-96D7-62AA11287B3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnvCalc.BusinessObjects", "EnvCalc.Core\EnvCalc.BusinessObjects\EnvCalc.BusinessObjects.csproj", "{98EBCE62-EF01-481F-8CC9-85BA234A1861}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EnvCalc.BusinessObjects", "EnvCalc.Core\EnvCalc.BusinessObjects\EnvCalc.BusinessObjects.csproj", "{98EBCE62-EF01-481F-8CC9-85BA234A1861}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnvCalc.CustomControls", "EnvCalc.CustomControls\EnvCalc.CustomControls.csproj", "{D29B01C8-AFC1-4B06-B889-304493C28358}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +31,10 @@ Global
 		{98EBCE62-EF01-481F-8CC9-85BA234A1861}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{98EBCE62-EF01-481F-8CC9-85BA234A1861}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{98EBCE62-EF01-481F-8CC9-85BA234A1861}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D29B01C8-AFC1-4B06-B889-304493C28358}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D29B01C8-AFC1-4B06-B889-304493C28358}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D29B01C8-AFC1-4B06-B889-304493C28358}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D29B01C8-AFC1-4B06-B889-304493C28358}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
