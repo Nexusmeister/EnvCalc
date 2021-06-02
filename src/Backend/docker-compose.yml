@@ -26,6 +26,12 @@ services:
       - 5601:5601
     networks:
       - envcalc
+  backend:
+    image: docker.pkg.github.com/nexusmeister/envcalc/envcalc-backend:latest
+    ports:
+      - 8080:8080
+    networks:
+      - envcalc
 volumes:
   data01:
     driver: local
