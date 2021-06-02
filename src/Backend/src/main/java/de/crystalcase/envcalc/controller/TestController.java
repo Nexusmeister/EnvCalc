@@ -29,4 +29,8 @@ public class TestController {
     @GetMapping(value = "/test")
     @ResponseBody
     private String test(){ return "Test successful"; }
+
+    @GetMapping(value = "/workflow")
+    @ResponseBody
+    private String workflow(){ return "workflow successful"; }
 }
