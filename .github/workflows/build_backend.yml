@@ -5,8 +5,7 @@ name: Package EnvCalc Backend
 
 on:
   push:
-    branches: 
-    - backend/main
+    branches: [ backend/main ]
   pull_request:
     branches: [ main ]
 
