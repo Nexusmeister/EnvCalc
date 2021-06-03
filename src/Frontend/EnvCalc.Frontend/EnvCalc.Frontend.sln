@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EnvCalc.Tools", "EnvCalc.Co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EnvCalc.BusinessObjects", "EnvCalc.Core\EnvCalc.BusinessObjects\EnvCalc.BusinessObjects.csproj", "{98EBCE62-EF01-481F-8CC9-85BA234A1861}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnvCalc.CustomControls", "EnvCalc.CustomControls\EnvCalc.CustomControls.csproj", "{D29B01C8-AFC1-4B06-B889-304493C28358}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EnvCalc.CustomControls", "EnvCalc.CustomControls\EnvCalc.CustomControls.csproj", "{D29B01C8-AFC1-4B06-B889-304493C28358}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
