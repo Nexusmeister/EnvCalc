@@ -1,0 +1,40 @@
+version: '3.0'
+services:
+  elastic_cluster:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.12.1
+    container_name: node01
+    environment:
+      - node.name=node01
+      - cluster.name=cluster01
+      - cluster.initial_master_nodes=node01
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - data01:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    networks:
+      - envcalc
+    hostname: "elasticsearch"
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.12.1
+    ports:
+      - 5601:5601
+    networks:
+      - envcalc
+  backend:
+    image: docker.pkg.github.com/nexusmeister/envcalc/envcalc-backend:latest
+    ports:
+      - 8080:8080
+    networks:
+      - envcalc
+volumes:
+  data01:
+    driver: local
+networks:
+  envcalc:
+    driver: bridge
