@@ -17,11 +17,11 @@
         <!--<Label Content="Produzent"/>
         <Label Content="Produzent"/>-->
         <TabControl Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2">
-            <TabItem Header="Lieferant">
-                <Frame Source="Views/LieferantView.xaml"/>
-            </TabItem>
             <TabItem Header="Produzent">
                 <Frame Source="Views/ProduzentView.xaml"></Frame>
+            </TabItem>
+            <TabItem Header="Lieferant">
+                <Frame Source="Views/LieferantView.xaml"/>
             </TabItem>
         </TabControl>
     </Grid>
