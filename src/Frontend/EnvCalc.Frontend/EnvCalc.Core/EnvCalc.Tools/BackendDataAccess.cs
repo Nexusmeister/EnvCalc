@@ -41,7 +41,7 @@ namespace EnvCalc.Tools
             else
             {
                 var msg = await response.Content.ReadAsStringAsync();
-                Logger.Entity.WriteLog(msg, LogEventLevel.Error);
+                Logger.Instanz.WriteLog(msg, LogEventLevel.Error);
                 throw new Exception(msg);
             }
         }
