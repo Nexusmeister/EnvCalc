@@ -20,10 +20,26 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-
-        <ListBox Grid.Column="0" Grid.Row="0" Name="LbElemente" ItemsSource="{Binding ProzessListe}" MinWidth="200">
+        <Grid Grid.Row="0" Grid.Column="0">
+            <TextBox  Width="250" Height="20"  VerticalAlignment="Center" HorizontalAlignment="Left" x:Name="SearchTermTextBox" Margin="0,0,0,2"/>
+            <TextBlock IsHitTestVisible="False" Text="Suche" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,2" Foreground="DarkGray">
+                <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Text, ElementName=SearchTermTextBox}" Value="">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+        </Grid>
+        <!--<TextBox Grid.Row="0" Grid.Column="0" Height="20" BorderThickness="1,1,1,0" />-->
+        <ListBox Grid.Column="0" Grid.Row="1" Name="LbElemente" ItemsSource="{Binding ProzessListe}" MinWidth="200">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid Margin="0,2">
@@ -36,6 +52,6 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <GridSplitter Grid.Column="1" Grid.Row="0" Width="5" HorizontalAlignment="Stretch"/>
+        <GridSplitter Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Width="5" HorizontalAlignment="Stretch"/>
     </Grid>
 </Page>
