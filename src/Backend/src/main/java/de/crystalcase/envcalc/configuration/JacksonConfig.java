@@ -16,7 +16,7 @@ public class JacksonConfig {
         return new Jackson2ObjectMapperBuilderCustomizer() {
             @Override
             public void customize(Jackson2ObjectMapperBuilder jacksonObjectMapperBuilder) {
-                jacksonObjectMapperBuilder.mixIn(ParsedStringTerms.ParsedBucket.class, MixIn.class);
+                jacksonObjectMapperBuilder.mixIn(String.class, MixIn.class);
             }
         };
     }
