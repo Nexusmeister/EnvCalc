@@ -16,9 +16,9 @@ namespace EnvCalc.Frontend.ViewModels
         /// <summary>
         /// Gets or sets whether the user has agreed to continue.
         /// </summary>
-        public ObservableCollection<Prozess> ProzessListe
+        public ObservableCollection<Exchange> ProzessListe
         {
-            get => GetValue<ObservableCollection<Prozess>>(ProzessListeProperty);
+            get => GetValue<ObservableCollection<Exchange>>(ProzessListeProperty);
             set => SetValue(ProzessListeProperty, value);
         }
 
@@ -26,13 +26,13 @@ namespace EnvCalc.Frontend.ViewModels
         /// Register the UserAgreedToContinue property so it is known in the class.
         /// </summary>
         public static readonly PropertyData ProzessListeProperty = 
-            RegisterProperty(nameof(ProzessListe), typeof(ObservableCollection<Prozess>));
+            RegisterProperty(nameof(ProzessListe), typeof(ObservableCollection<Exchange>));
 
         public LieferantViewModel()
         {
-            ProzessListe = new ObservableCollection<Prozess>()
+            ProzessListe = new ObservableCollection<Exchange>()
             {
-                new Prozess()
+                new Exchange()
                 {
                     Id = "123123",
                     Titel = "NeuerTest"
