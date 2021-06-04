@@ -1,7 +1,10 @@
 ﻿using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using Catel.Data;
 using Catel.MVVM;
 using EnvCalc.BusinessObjects;
+using EnvCalc.Tools;
+using EnvCalc.Tools.Extensions;
 
 namespace EnvCalc.Frontend.ViewModels
 {
@@ -30,14 +33,13 @@ namespace EnvCalc.Frontend.ViewModels
 
         public LieferantViewModel()
         {
-            ProzessListe = new ObservableCollection<Exchange>()
-            {
-                new Exchange()
-                {
-                    Id = "123123",
-                    Titel = "NeuerTest"
-                }
-            };
+            HoleProzessliste();
+        }
+
+        private async Task HoleProzessliste()
+        {
+            var liste = await BackendDataAccess.Instance.GetAll();
+            ProzessListe = liste.ToObservableCollection();
         }
     }
 }
