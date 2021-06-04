@@ -28,6 +28,9 @@ namespace EnvCalc.Frontend
             //    MessageBox.Show("Fehler beim Laden der Einstellungen. Prüfen Sie den Pfad..");
             //}
 
+            BackendDataAccess.ErzeugeInstanz();
+            Logger.Entity.WriteLog("DataAccess initialisiert und bereit für Anfragen", LogEventLevel.Information);
+
             base.OnStartup(e);
         }
     }
