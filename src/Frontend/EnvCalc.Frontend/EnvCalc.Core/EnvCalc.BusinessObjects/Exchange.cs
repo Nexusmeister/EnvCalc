@@ -2,6 +2,6 @@
 {
     public class Exchange
     {
-        public string Titel { get; }
+        public string Titel { get; set; }
     }
 }
