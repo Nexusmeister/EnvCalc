@@ -41,9 +41,10 @@ namespace EnvCalc.Frontend.ViewModels
             get => GetValue<string>(SuchTextProperty);
             set
             {
+                SetValue(SuchTextProperty, value);
                 // Damit bei einer neuen Suche immer wieder die volle Liste angezeigt wird
                 // Das geht bestimmt smarter, aber zumindest funktioniert das
-                if (SuchText is not null && value is "") 
+                if (SuchText is not null && value is "" && ProzessView is not null) 
                 {
                     ProzessView.Filter = null;
                 }
@@ -53,7 +54,6 @@ namespace EnvCalc.Frontend.ViewModels
                 }
 
                 ProzessView?.Refresh();
-                SetValue(SuchTextProperty, value);
             }
         }
 
@@ -85,12 +85,26 @@ namespace EnvCalc.Frontend.ViewModels
 
         private bool SucheProzess(object obj)
         {
-            if (obj is Exchange ex)
+            if (obj is not Exchange ex)
             {
-                return ex.Titel.Contains(SuchText, StringComparison.InvariantCultureIgnoreCase);
+                return false;
             }
 
-            return false;
+            var suche = SuchText;
+            if (suche.Contains("ö", StringComparison.InvariantCultureIgnoreCase))
+            {
+                suche = suche.Replace("ö", "oe", StringComparison.InvariantCultureIgnoreCase);
+            }
+            if (suche.Contains("ü", StringComparison.InvariantCultureIgnoreCase))
+            {
+                suche = suche.Replace("ü", "ue", StringComparison.InvariantCultureIgnoreCase);
+            }
+            if (suche.Contains("ä", StringComparison.InvariantCultureIgnoreCase))
+            {
+                suche = suche.Replace("ä", "ae", StringComparison.InvariantCultureIgnoreCase);
+            }
+
+            return ex.Titel.Contains(suche, StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }
