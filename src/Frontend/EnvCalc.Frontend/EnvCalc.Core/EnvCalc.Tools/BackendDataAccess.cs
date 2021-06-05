@@ -22,7 +22,7 @@ namespace EnvCalc.Tools
             _client = new HttpClient
             {
                 BaseAddress = new Uri(_baseUri),
-                Timeout = new TimeSpan(0, 0, 0, 10)
+                Timeout = new TimeSpan(0, 0, 0, 30)
             };
         }
 
