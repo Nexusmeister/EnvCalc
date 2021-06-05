@@ -12,7 +12,7 @@ namespace EnvCalc.Frontend.ViewModels
             get => GetValue<string>(IconProperty);
             set => SetValue(IconProperty, value);
         }
-
+        
         public static readonly PropertyData IconProperty = RegisterProperty(nameof(IconPath), typeof(string));
 
         public MainWindowViewModel()

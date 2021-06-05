@@ -100,9 +100,9 @@ namespace EnvCalc.Frontend.ViewModels
                 suche = suche.Replace("ü", "ue", StringComparison.InvariantCultureIgnoreCase);
             }
             if (suche.Contains("ä", StringComparison.InvariantCultureIgnoreCase))
-            {
+                {
                 suche = suche.Replace("ä", "ae", StringComparison.InvariantCultureIgnoreCase);
-            }
+                }
 
             return ex.Titel.Contains(suche, StringComparison.InvariantCultureIgnoreCase);
         }

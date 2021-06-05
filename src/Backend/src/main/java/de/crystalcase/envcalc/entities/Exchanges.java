@@ -1,7 +1,5 @@
-package de.crystalcase.envcalc.data;
+package de.crystalcase.envcalc.entities;
 
-import de.crystalcase.envcalc.enums.ExchangeType;
-import de.crystalcase.envcalc.enums.ExchangeUnit;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;

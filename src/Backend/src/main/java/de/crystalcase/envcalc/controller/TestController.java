@@ -1,9 +1,8 @@
 package de.crystalcase.envcalc.controller;
 
-import de.crystalcase.envcalc.data.Category;
-import de.crystalcase.envcalc.data.Exchanges;
+import de.crystalcase.envcalc.entities.Category;
+import de.crystalcase.envcalc.entities.Exchanges;
 import de.crystalcase.envcalc.repositories.ExchangesRepository;
-import de.crystalcase.envcalc.repositories.exchanges.ExchangesCustomRepository;
 import de.crystalcase.envcalc.services.CategoryService;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,8 +36,4 @@ public class TestController {
     @ResponseBody
     private String workflow(){ return "workflow successful"; }
 
-    @GetMapping(value = "/exchanges")
-    @ResponseBody
-    private SearchHits<Exchanges> exchanges(){
-        return exchangesRepository.findByNameWithUniqueExchanges(""); }
 }

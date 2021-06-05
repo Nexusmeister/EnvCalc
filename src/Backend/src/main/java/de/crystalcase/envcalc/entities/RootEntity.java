@@ -1,18 +1,15 @@
-package de.crystalcase.envcalc.data;
+package de.crystalcase.envcalc.entities;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.elasticsearch.annotations.Field;
 
-@Getter
-@Setter
 @Document(indexName = "probas")
-public class Category {
+public class RootEntity {
 
     @Id
     private String id;
     private String name;
+    private Category category;
+    private Exchanges exchanges;
 
 }
