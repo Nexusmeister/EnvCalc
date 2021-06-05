@@ -18,15 +18,18 @@ namespace EnvCalc.Frontend
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            Logger.Entity = new Logger();
+            Logger.Instanz = new Logger();
             if (!Settings.CheckBetriebsmodus())
             {
-                Logger.Entity.WriteLog("Betriebsmodus konnte nicht ermittelt werden", LogEventLevel.Warning);
+                Logger.Instanz.WriteLog("Betriebsmodus konnte nicht ermittelt werden", LogEventLevel.Warning);
             }
             //if (!Settings.LadeEinstellungen())
             //{
             //    MessageBox.Show("Fehler beim Laden der Einstellungen. Prüfen Sie den Pfad..");
             //}
+
+            BackendDataAccess.ErzeugeInstanz();
+            Logger.Instanz.WriteLog("DataAccess initialisiert und bereit für Anfragen", LogEventLevel.Information);
 
             base.OnStartup(e);
         }
