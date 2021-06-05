@@ -7,6 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Ressourcen\envCalc_icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Ressourcen\envCalc_icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\EnvCalc.Core\EnvCalc.Tools\EnvCalc.Tools.csproj" />
   </ItemGroup>
 
