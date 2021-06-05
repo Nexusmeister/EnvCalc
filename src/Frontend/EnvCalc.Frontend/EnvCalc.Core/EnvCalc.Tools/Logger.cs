@@ -9,7 +9,7 @@ namespace EnvCalc.Tools
 {
     public class Logger : ILogger
     {
-        public static Logger Entity;
+        public static Logger Instanz;
 
         public void WriteLog(string message, LogEventLevel level)
         {
