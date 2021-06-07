@@ -8,6 +8,9 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: ./src/Frontend/EnvCalc.Frontend/EnvCalc.Frontend/
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET
@@ -18,8 +21,8 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+    - name: Publish
+      run: dotnet publish -c Release --no-restore
       
     - name: Get current date
       id: date
@@ -34,14 +37,14 @@ jobs:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
       with:
          tag_name: ${{ steps.date.outputs.date }}
-         release_name: Release SKCWebAPI ${{ steps.date.outputs.date }}
+         release_name: Release EnvCalc ${{ steps.date.outputs.date }}
          draft: false
          prerelease: false
     - name: Archive site content
       uses: thedoctor0/zip-release@master
       with:
         filename: envcalc_frontend.zip
-        path: artifacts/
+        path: D:\a\EnvCalc\EnvCalc\src\Frontend\EnvCalc.Frontend\EnvCalc.Frontend\bin\Release\net5.0-windows\
     - name: Upload release asset
       uses: actions/upload-release-asset@v1
       env:

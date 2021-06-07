@@ -1,9 +1,10 @@
 package de.crystalcase.envcalc.controller;
 
 import de.crystalcase.envcalc.entities.Category;
-import de.crystalcase.envcalc.entities.Exchanges;
+import de.crystalcase.envcalc.entities.RootEntity;
 import de.crystalcase.envcalc.repositories.ExchangesRepository;
 import de.crystalcase.envcalc.services.CategoryService;
+import de.crystalcase.envcalc.services.RootEntityService;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +21,8 @@ public class TestController {
     private CategoryService categoryService;
     @Resource
     private ExchangesRepository exchangesRepository;
+    @Resource
+    private RootEntityService rootEntityService;
 
     @PostMapping(value = "/categories")
     @ResponseBody
@@ -35,5 +38,9 @@ public class TestController {
     @GetMapping(value = "/workflow")
     @ResponseBody
     private String workflow(){ return "workflow successful"; }
+
+    @GetMapping(value = "rawRoot")
+    @ResponseBody
+    private SearchHits<RootEntity> rawRoot() { return rootEntityService.getRawUniqueRootEntities(); }
 
 }

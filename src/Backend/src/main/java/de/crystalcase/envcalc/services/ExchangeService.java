@@ -1,6 +1,7 @@
 package de.crystalcase.envcalc.services;
 
-import de.crystalcase.envcalc.entities.Exchanges;
+import de.crystalcase.envcalc.data.ExchangeData;
+import de.crystalcase.envcalc.entities.Exchange;
 import de.crystalcase.envcalc.repositories.ExchangesRepository;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.springframework.data.elasticsearch.core.SearchHits;
@@ -17,11 +18,20 @@ public class ExchangeService {
     private ExchangesRepository exchangesRepository;
 
     public List<String> getUniqueExchanges(){
-        final SearchHits<Exchanges> rawResult = exchangesRepository.findByNameWithUniqueExchanges();
+        final SearchHits<Exchange> rawResult = exchangesRepository.findUniqueExchanges();
         final List<String> exchangeData = new ArrayList<>();
         for(Terms.Bucket bucket : ((Terms)rawResult.getAggregations().asList().get(0)).getBuckets())
             exchangeData.add((String)bucket.getKey());
 
         return exchangeData;
+    }
+
+    public ExchangeData createData(Exchange exchange){
+        return ExchangeData.builder()
+                .name(exchange.getFlow().getName())
+                .unit(exchange.getUnit().getName())
+                .amount(exchange.getAmount())
+                .input(exchange.getInput())
+                .build();
     }
 }
