@@ -12,6 +12,7 @@ using Catel.MVVM;
 using EnvCalc.BusinessObjects;
 using EnvCalc.Tools;
 using EnvCalc.Tools.Extensions;
+using Serilog.Events;
 
 namespace EnvCalc.Frontend.ViewModels
 {
@@ -111,12 +112,25 @@ namespace EnvCalc.Frontend.ViewModels
 
         private async Task HoleProzesslisteAsync()
         {
-            Thread.Sleep(100);
-            var liste = await BackendDataAccess.Instance.GetAll();
-            ProzessListe = liste.ToObservableCollection();
-            ProzessView = CollectionViewSource.GetDefaultView(ProzessListe);
+            try
+            {
+                var liste = await BackendDataAccess.Instance.GetAll();
+                ProzessListe = liste.ToObservableCollection();
+                ProzessView = CollectionViewSource.GetDefaultView(ProzessListe);
 
-            ProzessView.Filter = SucheProzess;
+                ProzessView.Filter = SucheProzess;
+            }
+            catch (Exception e)
+            {
+                Logger.Instanz.WriteException("Fehler beim Abrufen der Prozessliste", LogEventLevel.Error, e);
+                ProzessListe = new ObservableCollection<Exchange>
+                {
+                    new()
+                    {
+                        Titel = "Fehler beim Abrufen der Liste, bitte versuchen Sie es erneut" // Das vlt. als Statusbar einbauen
+                    }
+                };
+            }
         }
 
         private bool SucheProzess(object obj)
