@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using Catel.Data;
@@ -76,6 +77,7 @@ namespace EnvCalc.Frontend.ViewModels
 
         private async void HoleProzessliste()
         {
+            Thread.Sleep(100);
             var liste = await BackendDataAccess.Instance.GetAll();
             ProzessListe = liste.ToObservableCollection();
             ProzessView = CollectionViewSource.GetDefaultView(ProzessListe);
@@ -100,11 +102,12 @@ namespace EnvCalc.Frontend.ViewModels
                 suche = suche.Replace("ü", "ue", StringComparison.InvariantCultureIgnoreCase);
             }
             if (suche.Contains("ä", StringComparison.InvariantCultureIgnoreCase))
-                {
+            {
                 suche = suche.Replace("ä", "ae", StringComparison.InvariantCultureIgnoreCase);
-                }
+            }
 
             return ex.Titel.Contains(suche, StringComparison.InvariantCultureIgnoreCase);
         }
+        
     }
 }
