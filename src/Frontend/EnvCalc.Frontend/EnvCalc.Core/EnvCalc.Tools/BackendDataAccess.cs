@@ -26,7 +26,7 @@ namespace EnvCalc.Tools
             };
         }
 
-        public async Task<List<Exchange>> GetAll()
+        public async Task<List<Exchange>> GetAllExchangesAsync()
         {
             var response = await _client.GetAsync("exchanges");
             if (response.StatusCode is HttpStatusCode.NoContent)
@@ -36,7 +36,28 @@ namespace EnvCalc.Tools
             if (response.IsSuccessStatusCode)
             {
                 var listeResult = await response.Content.ReadFromJsonAsync<List<string>>();
-                return listeResult!.Select(res => new Exchange {Titel = res}).ToList();
+                return listeResult!.Select(res => new Exchange {Name = res}).ToList();
+            }
+            else
+            {
+                var msg = await response.Content.ReadAsStringAsync();
+                Logger.Instanz.WriteLog(msg, LogEventLevel.Error);
+                throw new Exception(msg);
+            }
+        }
+
+        public async Task<List<ProzessRoot>> GetAllProzessberechnungen()
+        {
+            var response = await _client.GetAsync("rootEntity");
+            if (response.StatusCode is HttpStatusCode.NoContent)
+            {
+                return default;
+            }
+
+            if (response.IsSuccessStatusCode)
+            {
+                var listeResult = await response.Content.ReadFromJsonAsync<List<ProzessRoot>>();
+                return listeResult;
             }
             else
             {
