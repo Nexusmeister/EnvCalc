@@ -1,10 +1,8 @@
 package de.crystalcase.envcalc.controller;
 
 import de.crystalcase.envcalc.entities.Category;
-import de.crystalcase.envcalc.entities.Exchanges;
 import de.crystalcase.envcalc.repositories.ExchangesRepository;
 import de.crystalcase.envcalc.services.CategoryService;
-import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
