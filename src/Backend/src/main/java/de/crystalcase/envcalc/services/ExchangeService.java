@@ -26,6 +26,14 @@ public class ExchangeService {
         return exchangeData;
     }
 
+    public List<String> getUniqueUnits(){
+        final SearchHits<Exchange> rawResult = exchangesRepository.findUniqueUnits();
+        final List<String> units = new ArrayList<>();
+        for(Terms.Bucket bucket : ((Terms)rawResult.getAggregations().asList().get(0)).getBuckets())
+            units.add((String)bucket.getKey());
+        return units;
+    }
+
     public ExchangeData createData(Exchange exchange){
         return ExchangeData.builder()
                 .name(exchange.getFlow().getName())
