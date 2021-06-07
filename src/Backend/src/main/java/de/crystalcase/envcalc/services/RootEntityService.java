@@ -32,6 +32,10 @@ public class RootEntityService {
         return result;
     }
 
+    public SearchHits<RootEntity> getRawUniqueRootEntities(){
+        return rootEntityRepository.findAllByType(RootEntityTypes.Process);
+    }
+
 
     private RootEntityData createData(RootEntity rootEntity){
         final ArrayList<ExchangeData> exchangeData = new ArrayList<>();
