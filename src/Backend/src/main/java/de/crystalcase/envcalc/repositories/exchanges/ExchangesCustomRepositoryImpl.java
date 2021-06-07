@@ -14,6 +14,7 @@ public class ExchangesCustomRepositoryImpl implements ExchangesCustomRepository 
         this.operations = operations;
     }
 
+
     @Override
     public SearchHits<Exchange> findUniqueExchanges(){
         NativeSearchQuery query = new NativeSearchQueryBuilder()
