@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Catel.MVVM;
+using EnvCalc.Frontend.Commands;
 using EnvCalc.Frontend.ViewModels;
 
 namespace EnvCalc.Frontend
@@ -25,6 +26,19 @@ namespace EnvCalc.Frontend
         public MainWindow()
         {
             InitializeComponent();
+            Loaded += OnLoaded;
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ICloseWindows vm)
+            {
+                vm.Close += Close;
+                Closing += (s, e) =>
+                {
+                    e.Cancel = !vm.CanClose();
+                };
+            }
         }
     }
 }

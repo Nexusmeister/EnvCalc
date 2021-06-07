@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <Folder Include="Extensions\" />
+    <Folder Include="Utility\ErrorHandling\" />
   </ItemGroup>
 
 </Project>

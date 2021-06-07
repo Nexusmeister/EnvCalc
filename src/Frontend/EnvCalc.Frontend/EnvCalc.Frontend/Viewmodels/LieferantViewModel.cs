@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Data;
+using System.Windows.Input;
+using AsyncAwaitBestPractices.MVVM;
 using Catel.Data;
 using Catel.MVVM;
 using EnvCalc.BusinessObjects;
@@ -35,7 +38,14 @@ namespace EnvCalc.Frontend.ViewModels
             set => SetValue(FilteredProperty, value);
         }
 
-        public Command MyAction { get; private set; }
+        public bool IsBusy
+        {
+            get => GetValue<bool>(IsBusyProperty);
+            set => SetValue(IsBusyProperty, value);
+        }
+
+        public IAsyncCommand ProzesseLadenCommand { get; private set; }
+        public IAsyncCommand AktualisierenCommand { get; private set; }
 
         public string SuchText
         {
@@ -70,12 +80,36 @@ namespace EnvCalc.Frontend.ViewModels
         public static readonly PropertyData SuchTextProperty =
             RegisterProperty(nameof(SuchText), typeof(string));
 
+        public static readonly PropertyData IsBusyProperty = RegisterProperty(nameof(IsBusy), typeof(bool));
+
         public LieferantViewModel()
         {
-            HoleProzessliste();
+            //HoleProzessliste();
+            AktualisierenCommand = new AsyncCommand(AktualisiereProzessListeAsync, _ => !IsBusy);
+            ProzesseLadenCommand = new AsyncCommand(HoleProzesslisteAsync, _ => !IsBusy);
         }
 
-        private async void HoleProzessliste()
+        /// <summary>
+        /// Method to check whether the Edit command can be executed.
+        /// </summary>
+        private bool KannAktualisieren()
+        {
+            return !IsBusy;
+        }
+
+        /// <summary>
+        /// Method to invoke when the Edit command is executed.
+        /// </summary>
+        private async Task AktualisiereProzessListeAsync()
+        {
+            ProzessListe.Clear();
+            ProzessView.Refresh();
+
+            await HoleProzesslisteAsync();
+        }
+
+
+        private async Task HoleProzesslisteAsync()
         {
             Thread.Sleep(100);
             var liste = await BackendDataAccess.Instance.GetAll();
@@ -88,6 +122,11 @@ namespace EnvCalc.Frontend.ViewModels
         private bool SucheProzess(object obj)
         {
             if (obj is not Exchange ex)
+            {
+                return false;
+            }
+
+            if (SuchText is null)
             {
                 return false;
             }
