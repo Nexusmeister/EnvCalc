@@ -108,5 +108,6 @@ namespace EnvCalc.Frontend.ViewModels
 
             return ex.Titel.Contains(suche, StringComparison.InvariantCultureIgnoreCase);
         }
+        
     }
 }
