@@ -2,7 +2,7 @@
 {
     public class Prozess
     {
-        public string Id { get; set; }
-        public string Titel { get; set; }
+        public string Name { get; set; }
+        public Exchange[] Exchanges { get; set; }
     }
 }
