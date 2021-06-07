@@ -114,7 +114,7 @@ namespace EnvCalc.Frontend.ViewModels
         {
             try
             {
-                var liste = await BackendDataAccess.Instance.GetAll();
+                var liste = await BackendDataAccess.Instance.GetAllExchangesAsync();
                 ProzessListe = liste.ToObservableCollection();
                 ProzessView = CollectionViewSource.GetDefaultView(ProzessListe);
 
@@ -127,7 +127,7 @@ namespace EnvCalc.Frontend.ViewModels
                 {
                     new()
                     {
-                        Titel = "Fehler beim Abrufen der Liste, bitte versuchen Sie es erneut" // Das vlt. als Statusbar einbauen
+                        Name = "Fehler beim Abrufen der Liste, bitte versuchen Sie es erneut" // Das vlt. als Statusbar einbauen
                     }
                 };
             }
@@ -159,7 +159,7 @@ namespace EnvCalc.Frontend.ViewModels
                 suche = suche.Replace("ä", "ae", StringComparison.InvariantCultureIgnoreCase);
             }
 
-            return ex.Titel.Contains(suche, StringComparison.InvariantCultureIgnoreCase);
+            return ex.Name.Contains(suche, StringComparison.InvariantCultureIgnoreCase);
         }
         
     }
