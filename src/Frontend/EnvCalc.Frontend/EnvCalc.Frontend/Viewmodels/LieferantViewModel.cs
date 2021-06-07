@@ -1,14 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Data;
+using System.Windows.Input;
+using AsyncAwaitBestPractices.MVVM;
 using Catel.Data;
 using Catel.MVVM;
 using EnvCalc.BusinessObjects;
 using EnvCalc.Tools;
 using EnvCalc.Tools.Extensions;
+using Serilog.Events;
 
 namespace EnvCalc.Frontend.ViewModels
 {
@@ -35,7 +39,14 @@ namespace EnvCalc.Frontend.ViewModels
             set => SetValue(FilteredProperty, value);
         }
 
-        public Command MyAction { get; private set; }
+        public bool IsBusy
+        {
+            get => GetValue<bool>(IsBusyProperty);
+            set => SetValue(IsBusyProperty, value);
+        }
+
+        public IAsyncCommand ProzesseLadenCommand { get; private set; }
+        public IAsyncCommand AktualisierenCommand { get; private set; }
 
         public string SuchText
         {
@@ -70,24 +81,66 @@ namespace EnvCalc.Frontend.ViewModels
         public static readonly PropertyData SuchTextProperty =
             RegisterProperty(nameof(SuchText), typeof(string));
 
+        public static readonly PropertyData IsBusyProperty = RegisterProperty(nameof(IsBusy), typeof(bool));
+
         public LieferantViewModel()
         {
-            HoleProzessliste();
+            //HoleProzessliste();
+            AktualisierenCommand = new AsyncCommand(AktualisiereProzessListeAsync, _ => !IsBusy);
+            ProzesseLadenCommand = new AsyncCommand(HoleProzesslisteAsync, _ => !IsBusy);
         }
 
-        private async void HoleProzessliste()
+        /// <summary>
+        /// Method to check whether the Edit command can be executed.
+        /// </summary>
+        private bool KannAktualisieren()
         {
-            Thread.Sleep(100);
-            var liste = await BackendDataAccess.Instance.GetAll();
-            ProzessListe = liste.ToObservableCollection();
-            ProzessView = CollectionViewSource.GetDefaultView(ProzessListe);
+            return !IsBusy;
+        }
 
-            ProzessView.Filter = SucheProzess;
+        /// <summary>
+        /// Method to invoke when the Edit command is executed.
+        /// </summary>
+        private async Task AktualisiereProzessListeAsync()
+        {
+            ProzessListe.Clear();
+            ProzessView.Refresh();
+
+            await HoleProzesslisteAsync();
+        }
+
+
+        private async Task HoleProzesslisteAsync()
+        {
+            try
+            {
+                var liste = await BackendDataAccess.Instance.GetAllExchangesAsync();
+                ProzessListe = liste.ToObservableCollection();
+                ProzessView = CollectionViewSource.GetDefaultView(ProzessListe);
+
+                ProzessView.Filter = SucheProzess;
+            }
+            catch (Exception e)
+            {
+                Logger.Instanz.WriteException("Fehler beim Abrufen der Prozessliste", LogEventLevel.Error, e);
+                ProzessListe = new ObservableCollection<Exchange>
+                {
+                    new()
+                    {
+                        Name = "Fehler beim Abrufen der Liste, bitte versuchen Sie es erneut" // Das vlt. als Statusbar einbauen
+                    }
+                };
+            }
         }
 
         private bool SucheProzess(object obj)
         {
             if (obj is not Exchange ex)
+            {
+                return false;
+            }
+
+            if (SuchText is null)
             {
                 return false;
             }
@@ -106,7 +159,7 @@ namespace EnvCalc.Frontend.ViewModels
                 suche = suche.Replace("ä", "ae", StringComparison.InvariantCultureIgnoreCase);
             }
 
-            return ex.Titel.Contains(suche, StringComparison.InvariantCultureIgnoreCase);
+            return ex.Name.Contains(suche, StringComparison.InvariantCultureIgnoreCase);
         }
         
     }
