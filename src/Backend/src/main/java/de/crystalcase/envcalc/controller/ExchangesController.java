@@ -19,4 +19,11 @@ public class ExchangesController {
     private List<String> getUniqueExchanges(){
         return exchangeService.getUniqueExchanges();
     }
+
+    @GetMapping(value = "/units")
+    @ResponseBody
+    private List<String> getUniqueUnits(){
+        return exchangeService.getUniqueUnits();
+    }
+
 }
