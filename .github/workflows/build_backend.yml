@@ -5,13 +5,12 @@ name: Package EnvCalc Backend
 
 on:
   push:
-    paths:
-      - './src/Backend/**'
-    branches: [ backend/main ]
+    branches: backend/main
   pull_request:
     paths:
-      - './src/Backend/**'
+      - 'src/Backend/**'
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build_and_push:
