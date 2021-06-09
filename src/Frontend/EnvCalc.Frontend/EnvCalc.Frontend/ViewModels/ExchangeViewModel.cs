@@ -83,18 +83,15 @@ namespace EnvCalc.Frontend.ViewModels
         public ExchangeViewModel()
         {
             //HoleProzessliste();
-            AktualisierenCommand = new AsyncCommand(AktualisiereExchangeListeAsync, _ => true);
-            ProzesseLadenCommand = new AsyncCommand(HoleExchangelisteAsync, _ => !IsBusy);
+            AktualisierenCommand = new AsyncCommand(AktualisiereExchangeListeAsync, CanExecute);
+            ProzesseLadenCommand = new AsyncCommand(HoleExchangelisteAsync, CanExecute);
         }
 
-        /// <summary>
-        /// Method to check whether the Edit command can be executed.
-        /// </summary>
-        private bool KannAktualisieren()
+        private bool CanExecute(object arg)
         {
             return !IsBusy;
         }
-
+        
         /// <summary>
         /// Method to invoke when the Edit command is executed.
         /// </summary>
@@ -111,11 +108,13 @@ namespace EnvCalc.Frontend.ViewModels
         {
             try
             {
+                IsBusy = true;
                 var liste = await BackendDataAccess.Instance.GetAllExchangesAsync();
                 ExchangeListe = liste.ToObservableCollection();
                 ExchangeView = CollectionViewSource.GetDefaultView(ExchangeListe);
 
                 ExchangeView.Filter = SucheExchange;
+                IsBusy = false;
             }
             catch (Exception e)
             {
@@ -129,7 +128,7 @@ namespace EnvCalc.Frontend.ViewModels
                 };
 
                 ExchangeView = CollectionViewSource.GetDefaultView(ExchangeListe);
-                IsBusy = true;
+                IsBusy = false;
             }
         }
 
