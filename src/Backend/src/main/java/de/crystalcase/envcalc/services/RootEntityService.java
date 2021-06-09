@@ -7,6 +7,7 @@ import de.crystalcase.envcalc.entities.RootEntity;
 import de.crystalcase.envcalc.enums.RootEntityTypes;
 import de.crystalcase.envcalc.repositories.RootEntityRepository;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ public class RootEntityService {
     @Resource
     private ExchangeService exchangeService;
 
+    @Cacheable(cacheNames = "rootEntities")
     public List<RootEntityData> getUniqueRootEntities(){
         final List<RootEntityData> result = new ArrayList<>();
         SearchHits<RootEntity> rawResult = rootEntityRepository.findAllByType(RootEntityTypes.Process);
