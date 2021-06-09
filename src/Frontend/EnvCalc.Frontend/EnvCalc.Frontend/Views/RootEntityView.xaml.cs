@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace EnvCalc.Frontend.Views
 {
     /// <summary>
-    /// Interaction logic for ProduzentView.xaml
+    /// Interaction logic for RootEntityView.xaml
     /// </summary>
-    public partial class ProduzentView : Page
+    public partial class RootEntityView : Page
     {
-        public ProduzentView()
+        public RootEntityView()
         {
             InitializeComponent();
         }

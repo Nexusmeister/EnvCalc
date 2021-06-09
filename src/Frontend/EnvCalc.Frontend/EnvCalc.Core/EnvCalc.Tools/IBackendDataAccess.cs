@@ -6,6 +6,7 @@ namespace EnvCalc.Tools
 {
     public interface IBackendDataAccess
     {
-        Task<List<Exchange>> GetAll();
+        Task<List<Exchange>> GetAllExchangesAsync();
+        Task<List<Prozess>> GetAllProzessberechnungen();
     }
 }
