@@ -13,7 +13,7 @@ using Serilog.Events;
 
 namespace EnvCalc.Frontend.ViewModels
 {
-    public class RootEntityViewModel : ViewModelBase
+    public class RootEntityViewModel : BaseViewModel
     {
         /// <summary>
         /// Gets the title of the view model.
@@ -92,14 +92,14 @@ namespace EnvCalc.Frontend.ViewModels
         public RootEntityViewModel()
         {
             //HoleProzessliste();
-            AktualisierenCommand = new AsyncCommand(AktualisiereProzessListeAsync, _ => true);
-            ProzesseLadenCommand = new AsyncCommand(HoleProzessListeAsync, _ => !IsBusy);
+            AktualisierenCommand = new AsyncCommand(AktualisiereProzessListeAsync, KannAktualisieren);
+            ProzesseLadenCommand = new AsyncCommand(InitialisiereProzessListeAsync, KannAktualisieren);
         }
 
         /// <summary>
         /// Method to check whether the Edit command can be executed.
         /// </summary>
-        private bool KannAktualisieren()
+        private bool KannAktualisieren(object arg)
         {
             return !IsBusy;
         }
@@ -115,16 +115,28 @@ namespace EnvCalc.Frontend.ViewModels
             await HoleProzessListeAsync();
         }
 
+        private async Task InitialisiereProzessListeAsync()
+        {
+            if (IstInitialisiert)
+            {
+                return;
+            }
+
+            await HoleProzessListeAsync();
+            IstInitialisiert = true;
+        }
 
         private async Task HoleProzessListeAsync()
         {
             try
             {
+                IsBusy = true;
                 var liste = await BackendDataAccess.Instance.GetAllProzessberechnungen();
                 ProzessListe = liste.ToObservableCollection();
                 CollectionView = CollectionViewSource.GetDefaultView(ProzessListe);
 
                 CollectionView.Filter = SucheProzess;
+                IsBusy = false;
             }
             catch (Exception e)
             {
@@ -138,7 +150,7 @@ namespace EnvCalc.Frontend.ViewModels
                 };
 
                 CollectionView = CollectionViewSource.GetDefaultView(ProzessListe);
-                IsBusy = true;
+                IsBusy = false;
             }
         }
 
