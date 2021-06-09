@@ -16,7 +16,7 @@ using System.Windows.Shapes;
 namespace EnvCalc.Frontend.Views
 {
     /// <summary>
-    /// Interaction logic for ExchangeView.xaml
+    /// Interaction logic for CollectionView.xaml
     /// </summary>
     public partial class ExchangeView : Page
     {

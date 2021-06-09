@@ -1,8 +1,14 @@
-﻿namespace EnvCalc.BusinessObjects
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
+
+namespace EnvCalc.BusinessObjects
 {
     public class Prozess
     {
+        [JsonProperty("name")]
         public string Name { get; set; }
-        public Exchange[] Exchanges { get; set; }
+
+        [JsonProperty("exchanges")]
+        public List<Exchange> Exchanges { get; set; }
     }
 }

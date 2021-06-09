@@ -22,7 +22,7 @@ namespace EnvCalc.Tools
             _client = new HttpClient
             {
                 BaseAddress = new Uri(_baseUri),
-                Timeout = new TimeSpan(0, 0, 0, 10)
+                Timeout = new TimeSpan(1, 0, 0, 25)
             };
         }
 
@@ -46,7 +46,7 @@ namespace EnvCalc.Tools
             }
         }
 
-        public async Task<List<ProzessRoot>> GetAllProzessberechnungen()
+        public async Task<List<Prozess>> GetAllProzessberechnungen()
         {
             var response = await _client.GetAsync("rootEntity");
             if (response.StatusCode is HttpStatusCode.NoContent)
@@ -56,8 +56,10 @@ namespace EnvCalc.Tools
 
             if (response.IsSuccessStatusCode)
             {
-                var listeResult = await response.Content.ReadFromJsonAsync<List<ProzessRoot>>();
-                return listeResult;
+                var t = await response.Content.ReadAsStringAsync();
+                var result = await response.Content.ReadFromJsonAsync<List<Prozess>>();
+
+                return result;
             }
             else
             {
