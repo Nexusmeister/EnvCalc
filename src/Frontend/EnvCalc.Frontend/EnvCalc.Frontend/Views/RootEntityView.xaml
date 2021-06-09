@@ -54,7 +54,11 @@
                     />
         </Grid>
         <!--<TextBox Grid.Row="0" Grid.Column="0" Height="20" BorderThickness="1,1,1,0" />-->
-        <ListBox Grid.Column="0" Grid.Row="1" Name="LbElemente" ItemsSource="{Binding CollectionView}" MinWidth="200">
+        <ListBox Grid.Column="0" Grid.Row="1" Name="LbElemente" 
+                 ItemsSource="{Binding CollectionView}" 
+                 SelectedItem="{Binding SelectedProzess}"
+                 SelectionMode="Single"
+                 MinWidth="200">
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="businessObjects:Prozess">
                     <Grid Margin="0,2">
@@ -68,5 +72,27 @@
             </ListBox.ItemTemplate>
         </ListBox>
         <GridSplitter Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Width="5" HorizontalAlignment="Stretch"/>
+        <Label Grid.Row="0" Grid.Column="2" Content="Ausstoß je Einheit" FontSize="14" FontWeight="Bold"></Label>
+        <Grid Grid.Row="1" Grid.Column="2">
+            <ListBox ItemsSource="{Binding SelectedProzess.Exchanges}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="businessObjects:Exchange">
+                        <Grid Margin="0,2">
+                            <StackPanel Orientation="Vertical" Width="800" Margin="0,0,0,5">
+                                <TextBlock x:Name="subHeaderText" 
+                                           FontSize="16" 
+                                           TextWrapping="Wrap" 
+                                           Foreground="Black"
+                                           Text="{Binding Name}" />
+                                <TextBlock Margin="20,0,0,0" Text="{Binding Unit,
+                                           StringFormat='Einheit: {0}'}"/>
+                                <TextBlock Margin="20,0,0,0" Text="{Binding Amount,
+                                           StringFormat='Menge: {0}'}"/>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
     </Grid>
 </Page>

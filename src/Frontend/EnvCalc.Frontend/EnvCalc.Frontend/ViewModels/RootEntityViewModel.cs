@@ -42,6 +42,12 @@ namespace EnvCalc.Frontend.ViewModels
             set => SetValue(IsBusyProperty, value);
         }
 
+        public Prozess SelectedProzess
+        {
+            get => GetValue<Prozess>(SelectedItemProperty);
+            set => SetValue(SelectedItemProperty, value);
+        }
+
         public IAsyncCommand ProzesseLadenCommand { get; private set; }
         public IAsyncCommand AktualisierenCommand { get; private set; }
 
@@ -79,6 +85,9 @@ namespace EnvCalc.Frontend.ViewModels
             RegisterProperty(nameof(SuchText), typeof(string));
 
         public static readonly PropertyData IsBusyProperty = RegisterProperty(nameof(IsBusy), typeof(bool));
+
+        public static readonly PropertyData SelectedItemProperty =
+            RegisterProperty(nameof(SelectedProzess), typeof(Prozess));
 
         public RootEntityViewModel()
         {
