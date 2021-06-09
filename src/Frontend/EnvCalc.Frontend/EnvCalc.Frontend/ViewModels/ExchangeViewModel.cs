@@ -13,7 +13,7 @@ using Serilog.Events;
 
 namespace EnvCalc.Frontend.ViewModels
 {
-    public class ExchangeViewModel : ViewModelBase
+    public class ExchangeViewModel : BaseViewModel
     {
         /// <summary>
         /// Gets the title of the view model.
@@ -84,7 +84,7 @@ namespace EnvCalc.Frontend.ViewModels
         {
             //HoleProzessliste();
             AktualisierenCommand = new AsyncCommand(AktualisiereExchangeListeAsync, CanExecute);
-            ProzesseLadenCommand = new AsyncCommand(HoleExchangelisteAsync, CanExecute);
+            ProzesseLadenCommand = new AsyncCommand(InitialisiereExchangeListeAsync, CanExecute);
         }
 
         private bool CanExecute(object arg)
@@ -101,6 +101,17 @@ namespace EnvCalc.Frontend.ViewModels
             ExchangeView.Refresh();
 
             await HoleExchangelisteAsync();
+        }
+
+        private async Task InitialisiereExchangeListeAsync()
+        {
+            if (IstInitialisiert)
+            {
+                return;
+            }
+
+            await HoleExchangelisteAsync();
+            IstInitialisiert = true;
         }
 
 

@@ -13,7 +13,7 @@ using Serilog.Events;
 
 namespace EnvCalc.Frontend.ViewModels
 {
-    public class RootEntityViewModel : ViewModelBase
+    public class RootEntityViewModel : BaseViewModel
     {
         /// <summary>
         /// Gets the title of the view model.
@@ -93,7 +93,7 @@ namespace EnvCalc.Frontend.ViewModels
         {
             //HoleProzessliste();
             AktualisierenCommand = new AsyncCommand(AktualisiereProzessListeAsync, KannAktualisieren);
-            ProzesseLadenCommand = new AsyncCommand(HoleProzessListeAsync, KannAktualisieren);
+            ProzesseLadenCommand = new AsyncCommand(InitialisiereProzessListeAsync, KannAktualisieren);
         }
 
         /// <summary>
@@ -115,6 +115,16 @@ namespace EnvCalc.Frontend.ViewModels
             await HoleProzessListeAsync();
         }
 
+        private async Task InitialisiereProzessListeAsync()
+        {
+            if (IstInitialisiert)
+            {
+                return;
+            }
+
+            await HoleProzessListeAsync();
+            IstInitialisiert = true;
+        }
 
         private async Task HoleProzessListeAsync()
         {

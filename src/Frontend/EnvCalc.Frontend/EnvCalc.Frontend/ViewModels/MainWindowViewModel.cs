@@ -6,7 +6,7 @@ using EnvCalc.Frontend.Commands;
 
 namespace EnvCalc.Frontend.ViewModels
 {
-    public class MainWindowViewModel : ViewModelBase, ICloseWindows
+    public class MainWindowViewModel : BaseViewModel, ICloseWindows
     {
         public override string Title => "EnvCalc";
 
@@ -25,7 +25,6 @@ namespace EnvCalc.Frontend.ViewModels
         {
             IconPath = "Ressourcen/envCalc_icon.png";
             CloseCommand = new Command(SchliesseAnwendung);
-
         }
 
         private void SchliesseAnwendung()

@@ -23,6 +23,7 @@
   <ItemGroup>
     <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="5.1.0" />
     <PackageReference Include="Catel.MVVM" Version="5.12.16" />
+    <PackageReference Include="netfx-Guard" Version="1.3.3.2" />
     <PackageReference Include="netfx-System.Windows.Input.DelegateCommand" Version="1.1.0" />
   </ItemGroup>
 
