@@ -61,7 +61,7 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="100" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="{Binding Titel}" />
+                        <TextBlock Text="{Binding Name}" />
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
