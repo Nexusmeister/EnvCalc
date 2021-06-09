@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:EnvCalc.Frontend.CustomControls"
         xmlns:vm="clr-namespace:EnvCalc.Frontend.ViewModels"
+        xmlns:converter="clr-namespace:EnvCalc.Frontend.CustomControls.Converter"
         Icon="{Binding IconPath}"
         Title="{Binding Title}"
         mc:Ignorable="d">
@@ -12,6 +13,10 @@
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
+
+    <Window.Resources>
+        <converter:BooleanToCollapsedVisibilityConverter x:Key="BooleanToCollapsedVisibilityConverter"/>
+    </Window.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -30,6 +35,11 @@
                 </MenuItem>
                 <MenuItem Header="_Prozesse">
                     <MenuItem Header="_Aktualisieren" InputGestureText="F5" />
+                </MenuItem>
+                <MenuItem Header="_Development" 
+                          Visibility="{Binding IstDevMenuSichtbar, 
+                                        Converter={StaticResource BooleanToCollapsedVisibilityConverter}}">
+                    <MenuItem Header="Log-Cockpit"/>
                 </MenuItem>
             </Menu>
         </DockPanel>
