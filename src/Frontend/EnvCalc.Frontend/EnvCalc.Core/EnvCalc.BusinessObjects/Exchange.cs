@@ -1,10 +1,19 @@
-﻿namespace EnvCalc.BusinessObjects
+﻿using Newtonsoft.Json;
+
+namespace EnvCalc.BusinessObjects
 {
     public class Exchange
     {
-        public string Name { get; init; }
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        [JsonProperty("unit")]
         public string Unit { get; set; }
-        public int Amount { get; set; }
+
+        [JsonProperty("amount")]
+        public double Amount { get; set; }
+
+        [JsonProperty("input")]
         public bool Input { get; set; }
     }
 }

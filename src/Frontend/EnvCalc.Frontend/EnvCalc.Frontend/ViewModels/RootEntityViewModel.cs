@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Data;
-using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
 using Catel.Data;
 using Catel.MVVM;
@@ -16,24 +13,24 @@ using Serilog.Events;
 
 namespace EnvCalc.Frontend.ViewModels
 {
-    public class LieferantViewModel : ViewModelBase
+    public class RootEntityViewModel : ViewModelBase
     {
         /// <summary>
         /// Gets the title of the view model.
         /// </summary>
         /// <value>The title.</value>
-        public override string Title => "Lieferantensicht";
+        public override string Title => "RootEntitysicht";
 
         /// <summary>
         /// Gets or sets whether the user has agreed to continue.
         /// </summary>
-        public ObservableCollection<Exchange> ProzessListe
+        public ObservableCollection<Prozess> ProzessListe
         {
-            get => GetValue<ObservableCollection<Exchange>>(ProzessListeProperty);
+            get => GetValue<ObservableCollection<Prozess>>(ProzessListeProperty);
             set => SetValue(ProzessListeProperty, value);
         }
 
-        public ICollectionView ProzessView
+        public ICollectionView CollectionView
         {
             get => GetValue<ICollectionView>(FilteredProperty);
             set => SetValue(FilteredProperty, value);
@@ -43,6 +40,12 @@ namespace EnvCalc.Frontend.ViewModels
         {
             get => GetValue<bool>(IsBusyProperty);
             set => SetValue(IsBusyProperty, value);
+        }
+
+        public Prozess SelectedProzess
+        {
+            get => GetValue<Prozess>(SelectedItemProperty);
+            set => SetValue(SelectedItemProperty, value);
         }
 
         public IAsyncCommand ProzesseLadenCommand { get; private set; }
@@ -56,38 +59,41 @@ namespace EnvCalc.Frontend.ViewModels
                 SetValue(SuchTextProperty, value);
                 // Damit bei einer neuen Suche immer wieder die volle Liste angezeigt wird
                 // Das geht bestimmt smarter, aber zumindest funktioniert das
-                if (SuchText is not null && value is "" && ProzessView is not null) 
+                if (SuchText is not null && value is "" && CollectionView is not null)
                 {
-                    ProzessView.Filter = null;
+                    CollectionView.Filter = null;
                 }
-                else if(ProzessView is not null && ProzessView.Filter is null && SuchText is not null && value is not "")
+                else if (CollectionView is not null && CollectionView.Filter is null && SuchText is not null && value is not "")
                 {
-                    ProzessView.Filter = SucheProzess;
+                    CollectionView.Filter = SucheProzess;
                 }
 
-                ProzessView?.Refresh();
+                CollectionView?.Refresh();
             }
         }
 
         /// <summary>
         /// Register the UserAgreedToContinue property so it is known in the class.
         /// </summary>
-        public static readonly PropertyData ProzessListeProperty = 
-            RegisterProperty(nameof(ProzessListe), typeof(ObservableCollection<Exchange>));
+        public static readonly PropertyData ProzessListeProperty =
+            RegisterProperty(nameof(ProzessListe), typeof(ObservableCollection<Prozess>));
 
         public static readonly PropertyData FilteredProperty =
-            RegisterProperty(nameof(ProzessView), typeof(ICollectionView));
+            RegisterProperty(nameof(CollectionView), typeof(ICollectionView));
 
         public static readonly PropertyData SuchTextProperty =
             RegisterProperty(nameof(SuchText), typeof(string));
 
         public static readonly PropertyData IsBusyProperty = RegisterProperty(nameof(IsBusy), typeof(bool));
 
-        public LieferantViewModel()
+        public static readonly PropertyData SelectedItemProperty =
+            RegisterProperty(nameof(SelectedProzess), typeof(Prozess));
+
+        public RootEntityViewModel()
         {
             //HoleProzessliste();
-            AktualisierenCommand = new AsyncCommand(AktualisiereProzessListeAsync, _ => !IsBusy);
-            ProzesseLadenCommand = new AsyncCommand(HoleProzesslisteAsync, _ => !IsBusy);
+            AktualisierenCommand = new AsyncCommand(AktualisiereProzessListeAsync, _ => true);
+            ProzesseLadenCommand = new AsyncCommand(HoleProzessListeAsync, _ => !IsBusy);
         }
 
         /// <summary>
@@ -104,38 +110,41 @@ namespace EnvCalc.Frontend.ViewModels
         private async Task AktualisiereProzessListeAsync()
         {
             ProzessListe.Clear();
-            ProzessView.Refresh();
+            CollectionView.Refresh();
 
-            await HoleProzesslisteAsync();
+            await HoleProzessListeAsync();
         }
 
 
-        private async Task HoleProzesslisteAsync()
+        private async Task HoleProzessListeAsync()
         {
             try
             {
-                var liste = await BackendDataAccess.Instance.GetAllExchangesAsync();
+                var liste = await BackendDataAccess.Instance.GetAllProzessberechnungen();
                 ProzessListe = liste.ToObservableCollection();
-                ProzessView = CollectionViewSource.GetDefaultView(ProzessListe);
+                CollectionView = CollectionViewSource.GetDefaultView(ProzessListe);
 
-                ProzessView.Filter = SucheProzess;
+                CollectionView.Filter = SucheProzess;
             }
             catch (Exception e)
             {
                 Logger.Instanz.WriteException("Fehler beim Abrufen der Prozessliste", LogEventLevel.Error, e);
-                ProzessListe = new ObservableCollection<Exchange>
+                ProzessListe = new ObservableCollection<Prozess>
                 {
-                    new()
+                    new Prozess()
                     {
                         Name = "Fehler beim Abrufen der Liste, bitte versuchen Sie es erneut" // Das vlt. als Statusbar einbauen
                     }
                 };
+
+                CollectionView = CollectionViewSource.GetDefaultView(ProzessListe);
+                IsBusy = true;
             }
         }
 
         private bool SucheProzess(object obj)
         {
-            if (obj is not Exchange ex)
+            if (obj is not Prozess prozess)
             {
                 return false;
             }
@@ -159,8 +168,8 @@ namespace EnvCalc.Frontend.ViewModels
                 suche = suche.Replace("ä", "ae", StringComparison.InvariantCultureIgnoreCase);
             }
 
-            return ex.Name.Contains(suche, StringComparison.InvariantCultureIgnoreCase);
+            return prozess.Name.Contains(suche, StringComparison.InvariantCultureIgnoreCase);
         }
-        
+
     }
 }
