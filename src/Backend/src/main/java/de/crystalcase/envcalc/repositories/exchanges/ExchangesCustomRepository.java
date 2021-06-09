@@ -6,4 +6,5 @@ import org.springframework.data.elasticsearch.core.SearchHits;
 
 public interface ExchangesCustomRepository {
     SearchHits<Exchange> findUniqueExchanges();
+    SearchHits<Exchange> findUniqueUnits();
 }

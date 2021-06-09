@@ -14,6 +14,8 @@ public class ExchangesCustomRepositoryImpl implements ExchangesCustomRepository 
         this.operations = operations;
     }
 
+
+
     @Override
     public SearchHits<Exchange> findUniqueExchanges(){
         NativeSearchQuery query = new NativeSearchQueryBuilder()
@@ -23,4 +25,15 @@ public class ExchangesCustomRepositoryImpl implements ExchangesCustomRepository 
         query.setMaxResults(0);
         return operations.search(query, Exchange.class);
     }
+
+    @Override
+    public SearchHits<Exchange> findUniqueUnits() {
+        NativeSearchQuery query = new NativeSearchQueryBuilder()
+                .addAggregation(AggregationBuilders.terms("uniq_units")
+                        .field("exchanges.unit.name").size(3000))
+                .build();
+        query.setMaxResults(0);
+        return operations.search(query, Exchange.class);
+    }
+
 }
