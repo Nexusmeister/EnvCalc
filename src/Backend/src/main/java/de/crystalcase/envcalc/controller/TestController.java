@@ -1,13 +1,11 @@
 package de.crystalcase.envcalc.controller;
 
-import de.crystalcase.envcalc.entities.Category;
-import de.crystalcase.envcalc.entities.RootEntity;
-import de.crystalcase.envcalc.repositories.ExchangesRepository;
-import de.crystalcase.envcalc.services.CategoryService;
+import de.crystalcase.envcalc.entities.Process;
+import de.crystalcase.envcalc.entities.probas.RootEntity;
+import de.crystalcase.envcalc.repositories.ProcessRepository;
 import de.crystalcase.envcalc.services.RootEntityService;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,18 +16,10 @@ import java.util.List;
 public class TestController {
 
     @Resource
-    private CategoryService categoryService;
-    @Resource
-    private ExchangesRepository exchangesRepository;
-    @Resource
     private RootEntityService rootEntityService;
 
-    @PostMapping(value = "/categories")
-    @ResponseBody
-    private List<Category> getAll(){
-        return categoryService.getCategories();
-    }
-
+    @Resource
+    private ProcessRepository processRepository;
 
     @GetMapping(value = "/test")
     @ResponseBody
@@ -42,5 +32,9 @@ public class TestController {
     @GetMapping(value = "rawRoot")
     @ResponseBody
     private SearchHits<RootEntity> rawRoot() { return rootEntityService.getRawUniqueRootEntities(); }
+
+    @GetMapping(value = "/procestest")
+    @ResponseBody
+    private List<Process> rawProcess() { return processRepository.findAll(); }
 
 }

@@ -1,4 +1,4 @@
-package de.crystalcase.envcalc.entities;
+package de.crystalcase.envcalc.entities.probas;
 
 import de.crystalcase.envcalc.enums.RootEntityTypes;
 import lombok.Getter;
@@ -20,6 +20,7 @@ public class RootEntity {
     private String name;
     @Field(type = FieldType.Text, name = "type")
     private RootEntityTypes type;
-    private List<Exchange> exchanges;
+    @Field(type = FieldType.Object, name = "exchanges")
+    private List<ProbasExchange> probasExchanges;
 
 }

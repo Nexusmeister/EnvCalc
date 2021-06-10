@@ -1,8 +1,8 @@
 package de.crystalcase.envcalc.services;
 
 import de.crystalcase.envcalc.data.ExchangeData;
-import de.crystalcase.envcalc.entities.Exchange;
-import de.crystalcase.envcalc.repositories.ExchangesRepository;
+import de.crystalcase.envcalc.entities.probas.ProbasExchange;
+import de.crystalcase.envcalc.repositories.probas.ProbasExchangeRepository;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.stereotype.Service;
@@ -15,10 +15,10 @@ import java.util.List;
 public class ExchangeService {
 
     @Resource
-    private ExchangesRepository exchangesRepository;
+    private ProbasExchangeRepository probasExchangeRepository;
 
     public List<String> getUniqueExchanges(){
-        final SearchHits<Exchange> rawResult = exchangesRepository.findUniqueExchanges();
+        final SearchHits<ProbasExchange> rawResult = probasExchangeRepository.findUniqueExchanges();
         final List<String> exchangeData = new ArrayList<>();
         for(Terms.Bucket bucket : ((Terms)rawResult.getAggregations().asList().get(0)).getBuckets())
             exchangeData.add((String)bucket.getKey());
@@ -27,19 +27,19 @@ public class ExchangeService {
     }
 
     public List<String> getUniqueUnits(){
-        final SearchHits<Exchange> rawResult = exchangesRepository.findUniqueUnits();
+        final SearchHits<ProbasExchange> rawResult = probasExchangeRepository.findUniqueUnits();
         final List<String> units = new ArrayList<>();
         for(Terms.Bucket bucket : ((Terms)rawResult.getAggregations().asList().get(0)).getBuckets())
             units.add((String)bucket.getKey());
         return units;
     }
 
-    public ExchangeData createData(Exchange exchange){
+    public ExchangeData createData(ProbasExchange probasExchange){
         return ExchangeData.builder()
-                .name(exchange.getFlow().getName())
-                .unit(exchange.getUnit().getName())
-                .amount(exchange.getAmount())
-                .input(exchange.getInput())
+                .name(probasExchange.getFlow().getName())
+                .unit(probasExchange.getProbasUnit().getName())
+                .amount(probasExchange.getAmount())
+                .input(probasExchange.getInput())
                 .build();
     }
 }
