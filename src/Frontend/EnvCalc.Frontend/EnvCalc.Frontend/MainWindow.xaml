@@ -17,6 +17,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition />
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -43,8 +44,11 @@
                 <Frame Source="Views/ExchangeView.xaml"/>
             </TabItem>
             <TabItem Header="Prototyp">
-
+                <Frame Source="Views/ProduktManagerView.xaml"/>
             </TabItem>
         </TabControl>
+        <StatusBar Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+            <StatusBarItem Content="Test"/>
+        </StatusBar>
     </Grid>
 </Window>
