@@ -14,6 +14,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -27,8 +28,9 @@ public class Product {
     private Integer version;
     private List<Process> processes;
     private Boolean deprecated;
-    @Field(type = FieldType.Date)
-    private Long created;
+
+    @Field(type = FieldType.Date, name = "@created")
+    private Date created;
 
 
 }

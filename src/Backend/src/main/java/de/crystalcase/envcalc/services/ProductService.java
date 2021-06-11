@@ -9,6 +9,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,7 +42,7 @@ public class ProductService {
                 .name(data.getName())
                 .processes(data.getProcesses())
                 .version(currentVersion + 1)
-                .created(new Instant().getMillis())
+                .created(new Date())
                 .build();
         productRepository.save(newProduct);
 
