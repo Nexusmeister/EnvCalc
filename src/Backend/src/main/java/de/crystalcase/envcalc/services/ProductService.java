@@ -2,6 +2,8 @@ package de.crystalcase.envcalc.services;
 
 import de.crystalcase.envcalc.entities.Product;
 import de.crystalcase.envcalc.repositories.ProductRepository;
+import org.joda.time.DateTime;
+import org.joda.time.Instant;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -39,6 +41,7 @@ public class ProductService {
                 .name(data.getName())
                 .processes(data.getProcesses())
                 .version(currentVersion + 1)
+                .created(new Instant().getMillis())
                 .build();
         productRepository.save(newProduct);
 
