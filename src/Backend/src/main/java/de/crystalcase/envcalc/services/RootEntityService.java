@@ -2,13 +2,11 @@ package de.crystalcase.envcalc.services;
 
 import de.crystalcase.envcalc.data.ExchangeData;
 import de.crystalcase.envcalc.data.RootEntityData;
-import de.crystalcase.envcalc.entities.Exchange;
-import de.crystalcase.envcalc.entities.RootEntity;
+import de.crystalcase.envcalc.entities.probas.ProbasExchange;
+import de.crystalcase.envcalc.entities.probas.RootEntity;
 import de.crystalcase.envcalc.enums.RootEntityTypes;
-import de.crystalcase.envcalc.repositories.RootEntityRepository;
-import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import de.crystalcase.envcalc.repositories.probas.RootEntityRepository;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.stereotype.Service;
 
@@ -42,8 +40,9 @@ public class RootEntityService {
     private RootEntityData createData(RootEntity rootEntity){
         final ArrayList<ExchangeData> exchangeData = new ArrayList<>();
 
-        for(Exchange exchange : rootEntity.getExchanges())
-            exchangeData.add(exchangeService.createData(exchange));
+        if(rootEntity.getProbasExchanges() != null)
+            for(ProbasExchange probasExchange : rootEntity.getProbasExchanges())
+                exchangeData.add(exchangeService.createData(probasExchange));
 
         return RootEntityData.builder()
                 .name(rootEntity.getName())

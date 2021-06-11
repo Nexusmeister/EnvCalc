@@ -1,4 +1,4 @@
-package de.crystalcase.envcalc.entities;
+package de.crystalcase.envcalc.entities.probas;
 
 import lombok.Getter;
 import lombok.Setter;
