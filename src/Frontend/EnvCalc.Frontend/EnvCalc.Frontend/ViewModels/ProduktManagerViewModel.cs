@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Threading.Tasks;
+using AsyncAwaitBestPractices.MVVM;
 using Catel.Data;
 using EnvCalc.BusinessObjects;
 
@@ -13,6 +15,8 @@ namespace EnvCalc.Frontend.ViewModels
         /// </summary>
         /// <value>The title.</value>
         public override string Title => "Exchangesicht";
+
+        public IAsyncCommand AktualisierenCommand { get; private set; }
 
         /// <summary>
         /// Gets or sets whether the user has agreed to continue.
@@ -27,6 +31,12 @@ namespace EnvCalc.Frontend.ViewModels
         {
             get => GetValue<ICollectionView>(FilteredProperty);
             set => SetValue(FilteredProperty, value);
+        }
+
+        public bool IsBusy
+        {
+            get => GetValue<bool>(IsBusyProperty);
+            set => SetValue(IsBusyProperty, value);
         }
 
         public string SuchText
@@ -48,6 +58,32 @@ namespace EnvCalc.Frontend.ViewModels
 
                 ExchangeView?.Refresh();
             }
+        }
+
+        public ProduktManagerViewModel()
+        {
+            AktualisierenCommand = new AsyncCommand(AktualisiereProduktListeAsync, CanExecute);
+        }
+
+        private bool CanExecute(object arg)
+        {
+            return !IsBusy;
+        }
+
+        /// <summary>
+        /// Method to invoke when the Edit command is executed.
+        /// </summary>
+        private async Task AktualisiereProduktListeAsync()
+        {
+            ExchangeListe.Clear();
+            ExchangeView.Refresh();
+
+            await HoleProduktListeAsync();
+        }
+
+        private async Task HoleProduktListeAsync()
+        {
+            // TODO
         }
 
 
@@ -88,5 +124,7 @@ namespace EnvCalc.Frontend.ViewModels
 
         public static readonly PropertyData ExchangeListeProperty =
             RegisterProperty(nameof(ExchangeListe), typeof(ObservableCollection<Exchange>));
+
+        public static readonly PropertyData IsBusyProperty = RegisterProperty(nameof(IsBusy), typeof(bool));
     }
 }
