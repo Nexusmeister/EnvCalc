@@ -37,6 +37,9 @@
         <!--<Label Content="Produzent"/>
         <Label Content="Produzent"/>-->
         <TabControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+            <TabItem Header="Start">
+                <Frame Source="Views/StartView.xaml"/>
+            </TabItem>
             <TabItem Header="RootEntity">
                 <Frame Source="Views/RootEntityView.xaml"/>
             </TabItem>
