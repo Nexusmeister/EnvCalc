@@ -73,5 +73,31 @@
             </ListBox.ItemTemplate>
         </ListBox>
         <GridSplitter Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Width="5" HorizontalAlignment="Stretch"/>
+
+        <Grid Grid.Row="1" Grid.Column="2">
+            <ListBox ItemsSource="{Binding SelectedProdukt}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="0,2">
+                            <StackPanel Orientation="Vertical" Width="800" Margin="0,0,0,5">
+                                <TextBlock x:Name="subHeaderText" 
+                                           FontSize="16" 
+                                           TextWrapping="Wrap" 
+                                           Foreground="Black"
+                                           Text="{Binding Name}" />
+                                <!--<TextBlock Margin="20,0,0,0" Text="{Binding Name}"/>-->
+                                <!--<TextBlock Margin="20,0,0,0" Text="{Binding Amount,
+                                           StringFormat='Menge: {0}'}"/>
+                                <TextBlock Margin="20,0,0,0" 
+                                           Text="{Binding Input,
+                                           Converter={StaticResource BooleanToInputOutputConverter}}"
+                                           Foreground="Gray"
+                                           FontSize="10"/>-->
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
     </Grid>
 </Page>

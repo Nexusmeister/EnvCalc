@@ -108,12 +108,12 @@ namespace EnvCalc.Frontend.ViewModels
              }
              catch (Exception e)
              {
-                Logger.Instanz.WriteException("Fehler beim Abrufen der Prozessliste", LogEventLevel.Error, e);
+                Logger.Instanz.WriteException("Fehler beim Abrufen der Produktliste", LogEventLevel.Error, e);
                 ProduktListe = new ObservableCollection<Produkt>
                 {
                      new()
                      {
-                         Name = "Fehler beim Abrufen der Liste, bitte versuchen Sie es erneut" // Das vlt. als Statusbar einbauen
+                         Name = "Fehler beim Abrufen der Produkte, bitte versuchen Sie es erneut" // Das vlt. als Statusbar einbauen
                      }
                 };
 
