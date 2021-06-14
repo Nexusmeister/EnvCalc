@@ -34,7 +34,6 @@ namespace EnvCalc.Tools
 
         public async Task<List<Exchange>> GetAllExchangesAsync()
         {
-            //var response = await _client.GetAsync("exchanges");
             var response = await CallWebservice("exchanges", HttpMethod.Get);
             var result = await VerarbeiteResponseAsync<string>(response);
             return result!.Select(res => new Exchange { Name = res }).ToList();
@@ -42,7 +41,6 @@ namespace EnvCalc.Tools
 
         public async Task<List<Prozess>> GetAllProzessberechnungen()
         {
-            //var response = await _client.GetAsync("rootEntity");
             var response = await CallWebservice("rootEntity", HttpMethod.Get);
             var result = await VerarbeiteResponseAsync<Prozess>(response);
             return result.ToList();
@@ -50,7 +48,6 @@ namespace EnvCalc.Tools
 
         public async Task<List<Produkt>> GetAllProdukteAsync()
         {
-            //var response = await _client.GetAsync("products");
             var response = await CallWebservice("products", HttpMethod.Get);
             var result = await VerarbeiteResponseAsync<Produkt>(response);
             return result.ToList();
@@ -59,9 +56,6 @@ namespace EnvCalc.Tools
         private async Task<HttpResponseMessage> CallWebservice(string endpunkt, HttpMethod methode)
         {
             using var requestMessage = new HttpRequestMessage(methode, endpunkt);
-            //requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Basic", "ZW52Y2FsYzohb3A3Tl45QWhYbXE0QE9FdXFeTjM5aXU3Wkt5SFEwRmFBZ2dqSVpH");
-
-            //requestMessage.Content.Headers = requestMessage.Headers;
             return await _client.SendAsync(requestMessage);
         }
 
