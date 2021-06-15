@@ -35,22 +35,28 @@ namespace EnvCalc.Tools
         public async Task<List<Exchange>> GetAllExchangesAsync()
         {
             var response = await CallWebservice("exchanges", HttpMethod.Get);
-            var result = await VerarbeiteResponseAsync<string>(response);
+            var result = await VerarbeiteResponseAsync<IEnumerable<string>>(response);
             return result!.Select(res => new Exchange { Name = res }).ToList();
         }
 
         public async Task<List<Prozess>> GetAllProzessberechnungen()
         {
             var response = await CallWebservice("rootEntity", HttpMethod.Get);
-            var result = await VerarbeiteResponseAsync<Prozess>(response);
+            var result = await VerarbeiteResponseAsync<IEnumerable<Prozess>>(response);
             return result.ToList();
         }
 
         public async Task<List<Produkt>> GetAllProdukteAsync()
         {
             var response = await CallWebservice("products", HttpMethod.Get);
-            var result = await VerarbeiteResponseAsync<Produkt>(response);
+            var result = await VerarbeiteResponseAsync<IEnumerable<Produkt>>(response);
             return result.ToList();
+        }
+
+        public async Task<bool> PostProduktAsync(Produkt produkt)
+        {
+            var response = await _client.PostAsJsonAsync("product", produkt);
+            return await VerarbeiteResponseAsync<bool>(response);
         }
 
         private async Task<HttpResponseMessage> CallWebservice(string endpunkt, HttpMethod methode)
@@ -69,7 +75,7 @@ namespace EnvCalc.Tools
             Instance = new BackendDataAccess();
         }
 
-        private static async Task<IEnumerable<T>> VerarbeiteResponseAsync<T>(HttpResponseMessage response)
+        private static async Task<T> VerarbeiteResponseAsync<T>(HttpResponseMessage response)
         {
             if (response.StatusCode is HttpStatusCode.NoContent)
             {
@@ -78,7 +84,7 @@ namespace EnvCalc.Tools
 
             if (response.IsSuccessStatusCode)
             {
-                var result = await response.Content.ReadFromJsonAsync<List<T>>();
+                var result = await response.Content.ReadFromJsonAsync<T>();
                 return result;
             }
             else

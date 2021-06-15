@@ -11,5 +11,6 @@ namespace EnvCalc.Tools
         Task<List<Exchange>> GetAllExchangesAsync();
         Task<List<Prozess>> GetAllProzessberechnungen();
         Task<List<Produkt>> GetAllProdukteAsync();
+        Task<bool> PostProduktAsync(Produkt produkt);
     }
 }
