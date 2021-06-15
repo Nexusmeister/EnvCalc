@@ -9,14 +9,13 @@ namespace EnvCalc.Frontend.CustomControls.Converter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var input = value != null && (null == parameter ? (bool)value : !(bool)value);
-
-            var enumValue = input ? ExchangeRichtung.Input : ExchangeRichtung.Output;
             if (value is null)
             {
-                enumValue = ExchangeRichtung.Undefined;
+                return Enum.GetName(typeof(ExchangeRichtung), ExchangeRichtung.Undefined);
             }
 
+            var input = null == parameter ? (bool)value : !(bool)value;
+            var enumValue = input ? ExchangeRichtung.Input : ExchangeRichtung.Output;
             var result = Enum.GetName(typeof(ExchangeRichtung), enumValue);
 
             return result;
