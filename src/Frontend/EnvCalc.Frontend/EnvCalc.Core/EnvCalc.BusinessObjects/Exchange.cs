@@ -1,19 +1,15 @@
-﻿using Newtonsoft.Json;
-
-namespace EnvCalc.BusinessObjects
+﻿namespace EnvCalc.BusinessObjects
 {
     public class Exchange
     {
-        [JsonProperty("name")]
+        public string Id { get; set; }
+
         public string Name { get; set; }
 
-        [JsonProperty("unit")]
         public string Unit { get; set; }
 
-        [JsonProperty("amount")]
         public double Amount { get; set; }
 
-        [JsonProperty("input")]
-        public bool Input { get; set; }
+        public bool? Input { get; set; }
     }
 }
