@@ -21,6 +21,7 @@ namespace EnvCalc.Frontend.ViewModels
         public override string Title => "Exchangesicht";
 
         public IAsyncCommand ProdukteLadenCommand { get; private set; }
+        public IAsyncCommand AktualisierenCommand { get; private set; }
 
         /// <summary>
         /// Gets or sets whether the user has agreed to continue.
@@ -72,7 +73,8 @@ namespace EnvCalc.Frontend.ViewModels
 
         public ProduktManagerViewModel()
         {
-            ProdukteLadenCommand = new AsyncCommand(AktualisiereProduktListeAsync, CanExecute);
+            ProdukteLadenCommand = new AsyncCommand(LadeProduktListeAsync, CanExecute);
+            AktualisierenCommand = new AsyncCommand(AktualisiereProduktListeAsync, CanExecute);
         }
 
         private bool CanExecute(object arg)
@@ -80,10 +82,15 @@ namespace EnvCalc.Frontend.ViewModels
             return !IsBusy;
         }
 
+        private async Task AktualisiereProduktListeAsync()
+        {
+            await HoleProduktListeAsync();
+        }
+
         /// <summary>
         /// Method to invoke when the Edit command is executed.
         /// </summary>
-        private async Task AktualisiereProduktListeAsync()
+        private async Task LadeProduktListeAsync()
         {
             if (IstInitialisiert)
             {
@@ -121,8 +128,7 @@ namespace EnvCalc.Frontend.ViewModels
                 IsBusy = false;
              }
         }
-
-
+        
         private bool SucheExchange(object obj)
         {
             if (obj is not Produkt ex)
