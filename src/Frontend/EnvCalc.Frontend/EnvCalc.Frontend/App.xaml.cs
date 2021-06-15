@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using Catel.IoC;
 using Serilog.Events;
 
 namespace EnvCalc.Frontend
@@ -30,7 +31,6 @@ namespace EnvCalc.Frontend
 
             BackendDataAccess.ErzeugeInstanz();
             Logger.Instanz.WriteLog("DataAccess initialisiert und bereit für Anfragen", LogEventLevel.Information);
-
             base.OnStartup(e);
         }
     }
