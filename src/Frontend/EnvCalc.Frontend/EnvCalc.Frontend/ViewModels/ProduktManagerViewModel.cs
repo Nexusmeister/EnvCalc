@@ -2,9 +2,17 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using System.Windows.Data;
+using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
 using Catel.Data;
-using EnvCalc.BusinessObjects;
+using Catel.IoC;
+using Catel.MVVM;
+using Catel.Services;
+using EnvCalc.BusinessObjects.ProduktManager;
+using EnvCalc.Tools;
+using EnvCalc.Tools.Extensions;
+using Serilog.Events;
 
 namespace EnvCalc.Frontend.ViewModels
 {
@@ -16,18 +24,26 @@ namespace EnvCalc.Frontend.ViewModels
         /// <value>The title.</value>
         public override string Title => "Exchangesicht";
 
+        public IAsyncCommand ProdukteLadenCommand { get; private set; }
         public IAsyncCommand AktualisierenCommand { get; private set; }
+        public IAsyncCommand ProduktHinzufuegenCommand { get; private set; }
 
         /// <summary>
         /// Gets or sets whether the user has agreed to continue.
         /// </summary>
-        public ObservableCollection<Exchange> ExchangeListe
+        public ObservableCollection<Produkt> ProduktListe
         {
-            get => GetValue<ObservableCollection<Exchange>>(ExchangeListeProperty);
-            set => SetValue(ExchangeListeProperty, value);
+            get => GetValue<ObservableCollection<Produkt>>(ProduktListeProperty);
+            set => SetValue(ProduktListeProperty, value);
         }
 
-        public ICollectionView ExchangeView
+        public Produkt SelectedProdukt
+        {
+            get => GetValue<Produkt>(SelectedProduktProperty);
+            set => SetValue(SelectedProduktProperty, value);
+        }
+
+        public ICollectionView ProduktView
         {
             get => GetValue<ICollectionView>(FilteredProperty);
             set => SetValue(FilteredProperty, value);
@@ -47,22 +63,47 @@ namespace EnvCalc.Frontend.ViewModels
                 SetValue(SuchTextProperty, value);
                 // Damit bei einer neuen Suche immer wieder die volle Liste angezeigt wird
                 // Das geht bestimmt smarter, aber zumindest funktioniert das
-                if (SuchText is not null && value is "" && ExchangeView is not null)
+                if (SuchText is not null && value is "" && ProduktView is not null)
                 {
-                    ExchangeView.Filter = null;
+                    ProduktView.Filter = null;
                 }
-                else if (ExchangeView is not null && ExchangeView.Filter is null && SuchText is not null && value is not "")
+                else if (ProduktView is not null && ProduktView.Filter is null && SuchText is not null && value is not "")
                 {
-                    ExchangeView.Filter = SucheExchange;
+                    ProduktView.Filter = SucheExchange;
                 }
 
-                ExchangeView?.Refresh();
+                ProduktView?.Refresh();
             }
         }
 
         public ProduktManagerViewModel()
         {
+            ProdukteLadenCommand = new AsyncCommand(LadeProduktListeAsync, CanExecute);
             AktualisierenCommand = new AsyncCommand(AktualisiereProduktListeAsync, CanExecute);
+            ProduktHinzufuegenCommand = new AsyncCommand(ProduktHinzufuegen, CanExecute);
+        }
+
+        private async Task ProduktHinzufuegen()
+        {
+            var dependencyResolver = this.GetDependencyResolver();
+            var uiVisualizerService = dependencyResolver.Resolve<IUIVisualizerService>();
+            var x = await uiVisualizerService.ShowDialogAsync(new ExchangeViewModel(), CompletedProc);
+
+            if (x.GetValueOrDefault())
+            {
+                
+            }
+        }
+
+        private void CompletedProc(object sender, UICompletedEventArgs e)
+        {
+            if (!e.Result.GetValueOrDefault())
+            {
+                var dependencyResolver = this.GetDependencyResolver();
+                var messageService = dependencyResolver.Resolve<IMessageService>();
+                //await messageService.Show("My first message via the service");
+                messageService.ShowInformationAsync("Des ist nur ein Test lol");
+            }
         }
 
         private bool CanExecute(object arg)
@@ -70,26 +111,56 @@ namespace EnvCalc.Frontend.ViewModels
             return !IsBusy;
         }
 
+        private async Task AktualisiereProduktListeAsync()
+        {
+            await HoleProduktListeAsync();
+        }
+
         /// <summary>
         /// Method to invoke when the Edit command is executed.
         /// </summary>
-        private async Task AktualisiereProduktListeAsync()
+        private async Task LadeProduktListeAsync()
         {
-            ExchangeListe.Clear();
-            ExchangeView.Refresh();
+            if (IstInitialisiert)
+            {
+                return;
+            }
 
             await HoleProduktListeAsync();
+            IstInitialisiert = true;
         }
 
         private async Task HoleProduktListeAsync()
         {
-            // TODO
+             try
+             {
+                IsBusy = true;
+                var result = await BackendDataAccess.Instance.GetAllProdukteAsync();
+                ProduktListe = result.ToObservableCollection();
+                ProduktView = CollectionViewSource.GetDefaultView(ProduktListe);
+
+                ProduktView.Filter = SucheExchange;
+                IsBusy = false;
+             }
+             catch (Exception e)
+             {
+                Logger.Instanz.WriteException("Fehler beim Abrufen der Produktliste", LogEventLevel.Error, e);
+                ProduktListe = new ObservableCollection<Produkt>
+                {
+                     new()
+                     {
+                         Name = "Fehler beim Abrufen der Produkte, bitte versuchen Sie es erneut" // Das vlt. als Statusbar einbauen
+                     }
+                };
+
+                ProduktView = CollectionViewSource.GetDefaultView(ProduktListe);
+                IsBusy = false;
+             }
         }
-
-
+        
         private bool SucheExchange(object obj)
         {
-            if (obj is not Exchange ex)
+            if (obj is not Produkt ex)
             {
                 return false;
             }
@@ -117,14 +188,17 @@ namespace EnvCalc.Frontend.ViewModels
         }
 
         public static readonly PropertyData FilteredProperty =
-            RegisterProperty(nameof(ExchangeView), typeof(ICollectionView));
+            RegisterProperty(nameof(ProduktView), typeof(ICollectionView));
 
         public static readonly PropertyData SuchTextProperty =
             RegisterProperty(nameof(SuchText), typeof(string));
 
-        public static readonly PropertyData ExchangeListeProperty =
-            RegisterProperty(nameof(ExchangeListe), typeof(ObservableCollection<Exchange>));
+        public static readonly PropertyData ProduktListeProperty =
+            RegisterProperty(nameof(ProduktListe), typeof(ObservableCollection<Produkt>));
 
         public static readonly PropertyData IsBusyProperty = RegisterProperty(nameof(IsBusy), typeof(bool));
+
+        public static readonly PropertyData SelectedProduktProperty =
+            RegisterProperty(nameof(SelectedProdukt), typeof(Produkt));
     }
 }
