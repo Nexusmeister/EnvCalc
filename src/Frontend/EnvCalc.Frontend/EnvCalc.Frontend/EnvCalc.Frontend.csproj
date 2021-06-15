@@ -8,10 +8,14 @@
 
   <ItemGroup>
     <None Remove="Ressourcen\envCalc_icon.png" />
+    <None Remove="Ressourcen\paginate-filter-plus.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="Ressourcen\envCalc_icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Ressourcen\paginate-filter-plus.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
