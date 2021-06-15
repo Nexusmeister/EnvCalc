@@ -3,6 +3,7 @@
     public enum ExchangeRichtung
     {
         Input,
-        Output
+        Output,
+        Undefined
     }
 }
