@@ -3,8 +3,12 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Data;
+using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
 using Catel.Data;
+using Catel.IoC;
+using Catel.MVVM;
+using Catel.Services;
 using EnvCalc.BusinessObjects.ProduktManager;
 using EnvCalc.Tools;
 using EnvCalc.Tools.Extensions;
@@ -22,6 +26,7 @@ namespace EnvCalc.Frontend.ViewModels
 
         public IAsyncCommand ProdukteLadenCommand { get; private set; }
         public IAsyncCommand AktualisierenCommand { get; private set; }
+        public IAsyncCommand ProduktHinzufuegenCommand { get; private set; }
 
         /// <summary>
         /// Gets or sets whether the user has agreed to continue.
@@ -75,6 +80,30 @@ namespace EnvCalc.Frontend.ViewModels
         {
             ProdukteLadenCommand = new AsyncCommand(LadeProduktListeAsync, CanExecute);
             AktualisierenCommand = new AsyncCommand(AktualisiereProduktListeAsync, CanExecute);
+            ProduktHinzufuegenCommand = new AsyncCommand(ProduktHinzufuegen, CanExecute);
+        }
+
+        private async Task ProduktHinzufuegen()
+        {
+            var dependencyResolver = this.GetDependencyResolver();
+            var uiVisualizerService = dependencyResolver.Resolve<IUIVisualizerService>();
+            var x = await uiVisualizerService.ShowDialogAsync(new ExchangeViewModel(), CompletedProc);
+
+            if (x.GetValueOrDefault())
+            {
+                
+            }
+        }
+
+        private void CompletedProc(object sender, UICompletedEventArgs e)
+        {
+            if (!e.Result.GetValueOrDefault())
+            {
+                var dependencyResolver = this.GetDependencyResolver();
+                var messageService = dependencyResolver.Resolve<IMessageService>();
+                //await messageService.Show("My first message via the service");
+                messageService.ShowInformationAsync("Des ist nur ein Test lol");
+            }
         }
 
         private bool CanExecute(object arg)
