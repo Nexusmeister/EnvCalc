@@ -37,22 +37,10 @@ namespace EnvCalc.Frontend.ViewModels
             set => SetValue(FilteredProperty, value);
         }
 
-        public bool IsBusy
-        {
-            get => GetValue<bool>(IsBusyProperty);
-            set => SetValue(IsBusyProperty, value);
-        }
-
         public Prozess SelectedProzess
         {
             get => GetValue<Prozess>(SelectedItemProperty);
             set => SetValue(SelectedItemProperty, value);
-        }
-
-        public bool IstLadekreisSichtbar
-        {
-            get => GetValue<bool>(IstLadekreisSichtbarProperty);
-            set => SetValue(IstLadekreisSichtbarProperty, value);
         }
 
         public IAsyncCommand ProzesseLadenCommand { get; private set; }
@@ -120,15 +108,13 @@ namespace EnvCalc.Frontend.ViewModels
         {
             try
             {
-                IsBusy = true;
-                IstLadekreisSichtbar = true;
+                WechselArbeitsstatus();
                 var liste = await BackendDataAccess.Instance.GetAllProzessberechnungen();
                 ProzessListe = liste.ToObservableCollection();
                 CollectionView = CollectionViewSource.GetDefaultView(ProzessListe);
 
                 CollectionView.Filter = SucheProzess;
-                IsBusy = false;
-                IstLadekreisSichtbar = false;
+                WechselArbeitsstatus();
             }
             catch (Exception e)
             {
@@ -187,12 +173,7 @@ namespace EnvCalc.Frontend.ViewModels
         public static readonly PropertyData SuchTextProperty =
             RegisterProperty(nameof(SuchText), typeof(string));
 
-        public static readonly PropertyData IsBusyProperty = RegisterProperty(nameof(IsBusy), typeof(bool));
-
         public static readonly PropertyData SelectedItemProperty =
             RegisterProperty(nameof(SelectedProzess), typeof(Prozess));
-
-        public static readonly PropertyData IstLadekreisSichtbarProperty =
-            RegisterProperty(nameof(IstLadekreisSichtbar), typeof(bool));
     }
 }
