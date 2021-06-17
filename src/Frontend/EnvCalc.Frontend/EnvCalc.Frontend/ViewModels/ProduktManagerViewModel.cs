@@ -3,11 +3,9 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Data;
-using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
 using Catel.Data;
 using Catel.IoC;
-using Catel.MVVM;
 using Catel.Services;
 using EnvCalc.BusinessObjects.ProduktManager;
 using EnvCalc.Tools;
@@ -48,19 +46,7 @@ namespace EnvCalc.Frontend.ViewModels
             get => GetValue<ICollectionView>(FilteredProperty);
             set => SetValue(FilteredProperty, value);
         }
-
-        public bool IsBusy
-        {
-            get => GetValue<bool>(IsBusyProperty);
-            set => SetValue(IsBusyProperty, value);
-        }
-
-        public bool IstLadekreisSichtbar
-        {
-            get => GetValue<bool>(IstLadekreisSichtbarProperty);
-            set => SetValue(IstLadekreisSichtbarProperty, value);
-        }
-
+       
         public string SuchText
         {
             get => GetValue<string>(SuchTextProperty);
@@ -140,15 +126,13 @@ namespace EnvCalc.Frontend.ViewModels
         {
              try
              {
-                IsBusy = true;
-                IstLadekreisSichtbar = true;
+                WechselArbeitsstatus();
                 var result = await BackendDataAccess.Instance.GetAllProdukteAsync();
                 ProduktListe = result.ToObservableCollection();
                 ProduktView = CollectionViewSource.GetDefaultView(ProduktListe);
 
                 ProduktView.Filter = SucheExchange;
-                IsBusy = false;
-                IstLadekreisSichtbar = false;
+                WechselArbeitsstatus();
              }
              catch (Exception e)
              {
@@ -204,12 +188,7 @@ namespace EnvCalc.Frontend.ViewModels
         public static readonly PropertyData ProduktListeProperty =
             RegisterProperty(nameof(ProduktListe), typeof(ObservableCollection<Produkt>));
 
-        public static readonly PropertyData IsBusyProperty = RegisterProperty(nameof(IsBusy), typeof(bool));
-
         public static readonly PropertyData SelectedProduktProperty =
             RegisterProperty(nameof(SelectedProdukt), typeof(Produkt));
-
-        public static readonly PropertyData IstLadekreisSichtbarProperty =
-            RegisterProperty(nameof(IstLadekreisSichtbar), typeof(bool));
     }
 }
