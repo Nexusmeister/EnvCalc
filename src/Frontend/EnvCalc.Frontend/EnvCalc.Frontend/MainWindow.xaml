@@ -6,6 +6,9 @@
         xmlns:controls="clr-namespace:EnvCalc.Frontend.CustomControls"
         xmlns:vm="clr-namespace:EnvCalc.Frontend.ViewModels"
         xmlns:catel="http://schemas.catelproject.com"
+        SizeToContent="Manual"
+        MinHeight="300"
+        MinWidth="400"
         Icon="{Binding IconPath}"
         Title="{Binding Title}"
         mc:Ignorable="d">
