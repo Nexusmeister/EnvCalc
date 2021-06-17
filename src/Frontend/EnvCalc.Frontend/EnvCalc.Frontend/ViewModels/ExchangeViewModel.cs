@@ -36,8 +36,8 @@ namespace EnvCalc.Frontend.ViewModels
             set => SetValue(FilteredProperty, value);
         }
 
-        public IAsyncCommand ProzesseLadenCommand { get; private set; }
-        public IAsyncCommand AktualisierenCommand { get; private set; }
+        public ICatelCommand ProzesseLadenCommand { get; private set; }
+        public ICatelCommand AktualisierenCommand { get; private set; }
 
         public string SuchText
         {
@@ -63,11 +63,11 @@ namespace EnvCalc.Frontend.ViewModels
         public ExchangeViewModel()
         {
             //HoleProzessliste();
-            AktualisierenCommand = new AsyncCommand(AktualisiereExchangeListeAsync, CanExecute);
-            ProzesseLadenCommand = new AsyncCommand(InitialisiereExchangeListeAsync, CanExecute);
+            AktualisierenCommand = new TaskCommand(AktualisiereExchangeListeAsync, CanExecute);
+            ProzesseLadenCommand = new TaskCommand(InitialisiereExchangeListeAsync, CanExecute);
         }
 
-        private bool CanExecute(object arg)
+        private bool CanExecute()
         {
             return !IsBusy;
         }

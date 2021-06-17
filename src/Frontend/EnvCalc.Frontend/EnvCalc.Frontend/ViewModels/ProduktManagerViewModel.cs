@@ -6,6 +6,7 @@ using System.Windows.Data;
 using AsyncAwaitBestPractices.MVVM;
 using Catel.Data;
 using Catel.IoC;
+using Catel.MVVM;
 using Catel.Services;
 using EnvCalc.BusinessObjects.ProduktManager;
 using EnvCalc.Tools;
@@ -22,9 +23,9 @@ namespace EnvCalc.Frontend.ViewModels
         /// <value>The title.</value>
         public override string Title => "Exchangesicht";
 
-        public IAsyncCommand ProdukteLadenCommand { get; private set; }
-        public IAsyncCommand AktualisierenCommand { get; private set; }
-        public IAsyncCommand ProduktHinzufuegenCommand { get; private set; }
+        public ICatelCommand ProdukteLadenCommand { get; private set; }
+        public ICatelCommand AktualisierenCommand { get; private set; }
+        public ICatelCommand ProduktHinzufuegenCommand { get; private set; }
 
         /// <summary>
         /// Gets or sets whether the user has agreed to continue.
@@ -70,16 +71,16 @@ namespace EnvCalc.Frontend.ViewModels
 
         public ProduktManagerViewModel()
         {
-            ProdukteLadenCommand = new AsyncCommand(LadeProduktListeAsync, CanExecute);
-            AktualisierenCommand = new AsyncCommand(AktualisiereProduktListeAsync, CanExecute);
-            ProduktHinzufuegenCommand = new AsyncCommand(ProduktHinzufuegen, CanExecute);
+            ProdukteLadenCommand = new TaskCommand(LadeProduktListeAsync, CanExecute);
+            AktualisierenCommand = new TaskCommand(AktualisiereProduktListeAsync, CanExecute);
+            ProduktHinzufuegenCommand = new TaskCommand(ProduktHinzufuegen, CanExecute);
         }
 
         private async Task ProduktHinzufuegen()
         {
             var dependencyResolver = this.GetDependencyResolver();
             var uiVisualizerService = dependencyResolver.Resolve<IUIVisualizerService>();
-            var x = await uiVisualizerService.ShowDialogAsync(new ExchangeViewModel(), CompletedProc);
+            var x = await uiVisualizerService.ShowDialogAsync(this, CompletedProc);
 
             if (x.GetValueOrDefault())
             {
@@ -98,7 +99,7 @@ namespace EnvCalc.Frontend.ViewModels
             }
         }
 
-        private bool CanExecute(object arg)
+        private bool CanExecute()
         {
             return !IsBusy;
         }

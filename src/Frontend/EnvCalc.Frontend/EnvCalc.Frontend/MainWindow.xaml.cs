@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Catel.MVVM;
+using Catel.Windows;
 using EnvCalc.Frontend.Commands;
 using EnvCalc.Frontend.ViewModels;
 
@@ -21,9 +22,9 @@ namespace EnvCalc.Frontend
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : DataWindow
     {
-        public MainWindow()
+        public MainWindow() : base(DataWindowMode.Custom)
         {
             InitializeComponent();
             Loaded += OnLoaded;
@@ -34,9 +35,9 @@ namespace EnvCalc.Frontend
             if (DataContext is ICloseWindows vm)
             {
                 vm.Close += Close;
-                Closing += (s, e) =>
+                Closing += (s, x) =>
                 {
-                    e.Cancel = !vm.CanClose();
+                    x.Cancel = !vm.CanClose();
                 };
             }
         }
