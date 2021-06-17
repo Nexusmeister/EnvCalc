@@ -8,6 +8,8 @@
       xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
       xmlns:businessObjects="clr-namespace:EnvCalc.BusinessObjects;assembly=EnvCalc.BusinessObjects"
       xmlns:converter="clr-namespace:EnvCalc.Frontend.CustomControls.Converter"
+      xmlns:gif="http://wpfanimatedgif.codeplex.com"
+      xmlns:catel="http://schemas.catelproject.com"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="RootEntityView">
@@ -18,6 +20,7 @@
     
     <Page.Resources>
         <converter:BooleanToInputOutputConverter x:Key="BooleanToInputOutputConverter"/>
+        <catel:BooleanToHidingVisibilityConverter x:Key="BooleanToHidingVisibilityConverter" />
     </Page.Resources>
 
     <b:Interaction.Triggers>
@@ -78,7 +81,12 @@
             </ListBox.ItemTemplate>
         </ListBox>
         <GridSplitter Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Width="5" HorizontalAlignment="Stretch"/>
-        <Label Grid.Row="0" Grid.Column="2" Content="Ausstoß je Einheit" FontSize="14" FontWeight="Bold"></Label>
+        <Label Grid.Row="0" Grid.Column="2" Content="Ausstoß je Einheit" FontSize="14" FontWeight="Bold"/>
+        <Image gif:ImageBehavior.AnimatedSource="../Ressourcen/circle_loading.gif" Grid.Row="1" Grid.Column="0" 
+               gif:ImageBehavior.AutoStart="True" 
+               gif:ImageBehavior.RepeatBehavior="Forever"
+               Height="75"
+               Visibility="{Binding IstLadekreisSichtbar, Converter={StaticResource BooleanToHidingVisibilityConverter}}"/>
         <Grid Grid.Row="1" Grid.Column="2">
             <ListBox ItemsSource="{Binding SelectedProzess.Exchanges}">
                 <ListBox.ItemTemplate>

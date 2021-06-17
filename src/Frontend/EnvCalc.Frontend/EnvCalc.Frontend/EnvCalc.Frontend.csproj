@@ -7,11 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Ressourcen\circle_loading.gif" />
     <None Remove="Ressourcen\envCalc_icon.png" />
     <None Remove="Ressourcen\paginate-filter-plus.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Ressourcen\circle_loading.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Ressourcen\envCalc_icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -29,6 +33,7 @@
     <PackageReference Include="Catel.MVVM" Version="5.12.16" />
     <PackageReference Include="netfx-Guard" Version="1.3.3.2" />
     <PackageReference Include="netfx-System.Windows.Input.DelegateCommand" Version="1.1.0" />
+    <PackageReference Include="WpfAnimatedGif" Version="2.0.0" />
   </ItemGroup>
 
 </Project>

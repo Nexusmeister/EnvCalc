@@ -55,6 +55,12 @@ namespace EnvCalc.Frontend.ViewModels
             set => SetValue(IsBusyProperty, value);
         }
 
+        public bool IstLadekreisSichtbar
+        {
+            get => GetValue<bool>(IstLadekreisSichtbarProperty);
+            set => SetValue(IstLadekreisSichtbarProperty, value);
+        }
+
         public string SuchText
         {
             get => GetValue<string>(SuchTextProperty);
@@ -135,12 +141,14 @@ namespace EnvCalc.Frontend.ViewModels
              try
              {
                 IsBusy = true;
+                IstLadekreisSichtbar = true;
                 var result = await BackendDataAccess.Instance.GetAllProdukteAsync();
                 ProduktListe = result.ToObservableCollection();
                 ProduktView = CollectionViewSource.GetDefaultView(ProduktListe);
 
                 ProduktView.Filter = SucheExchange;
                 IsBusy = false;
+                IstLadekreisSichtbar = false;
              }
              catch (Exception e)
              {
@@ -200,5 +208,8 @@ namespace EnvCalc.Frontend.ViewModels
 
         public static readonly PropertyData SelectedProduktProperty =
             RegisterProperty(nameof(SelectedProdukt), typeof(Produkt));
+
+        public static readonly PropertyData IstLadekreisSichtbarProperty =
+            RegisterProperty(nameof(IstLadekreisSichtbar), typeof(bool));
     }
 }
