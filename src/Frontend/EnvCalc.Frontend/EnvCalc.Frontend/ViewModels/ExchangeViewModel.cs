@@ -42,6 +42,12 @@ namespace EnvCalc.Frontend.ViewModels
             set => SetValue(IsBusyProperty, value);
         }
 
+        public bool IstLadekreisSichtbar
+        {
+            get => GetValue<bool>(IstLadekreisSichtbarProperty);
+            set => SetValue(IstLadekreisSichtbarProperty, value);
+        }
+
         public IAsyncCommand ProzesseLadenCommand { get; private set; }
         public IAsyncCommand AktualisierenCommand { get; private set; }
 
@@ -65,20 +71,6 @@ namespace EnvCalc.Frontend.ViewModels
                 ExchangeView?.Refresh();
             }
         }
-
-        /// <summary>
-        /// Register the UserAgreedToContinue property so it is known in the class.
-        /// </summary>
-        public static readonly PropertyData ExchangeListeProperty = 
-            RegisterProperty(nameof(ExchangeListe), typeof(ObservableCollection<Exchange>));
-
-        public static readonly PropertyData FilteredProperty =
-            RegisterProperty(nameof(ExchangeView), typeof(ICollectionView));
-
-        public static readonly PropertyData SuchTextProperty =
-            RegisterProperty(nameof(SuchText), typeof(string));
-
-        public static readonly PropertyData IsBusyProperty = RegisterProperty(nameof(IsBusy), typeof(bool));
 
         public ExchangeViewModel()
         {
@@ -120,12 +112,14 @@ namespace EnvCalc.Frontend.ViewModels
             try
             {
                 IsBusy = true;
+                IstLadekreisSichtbar = true;
                 var liste = await BackendDataAccess.Instance.GetAllExchangesAsync();
                 ExchangeListe = liste.ToObservableCollection();
                 ExchangeView = CollectionViewSource.GetDefaultView(ExchangeListe);
 
                 ExchangeView.Filter = SucheExchange;
                 IsBusy = false;
+                IstLadekreisSichtbar = false;
             }
             catch (Exception e)
             {
@@ -171,6 +165,22 @@ namespace EnvCalc.Frontend.ViewModels
 
             return ex.Name.Contains(suche, StringComparison.InvariantCultureIgnoreCase);
         }
-        
+
+        /// <summary>
+        /// Register the UserAgreedToContinue property so it is known in the class.
+        /// </summary>
+        public static readonly PropertyData ExchangeListeProperty =
+            RegisterProperty(nameof(ExchangeListe), typeof(ObservableCollection<Exchange>));
+
+        public static readonly PropertyData FilteredProperty =
+            RegisterProperty(nameof(ExchangeView), typeof(ICollectionView));
+
+        public static readonly PropertyData SuchTextProperty =
+            RegisterProperty(nameof(SuchText), typeof(string));
+
+        public static readonly PropertyData IsBusyProperty = RegisterProperty(nameof(IsBusy), typeof(bool));
+
+        public static readonly PropertyData IstLadekreisSichtbarProperty =
+            RegisterProperty(nameof(IstLadekreisSichtbar), typeof(bool));
     }
 }
