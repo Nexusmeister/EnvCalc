@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows.Input;
 using Catel.Data;
 using Catel.MVVM;
 using EnvCalc.Frontend.Commands;
