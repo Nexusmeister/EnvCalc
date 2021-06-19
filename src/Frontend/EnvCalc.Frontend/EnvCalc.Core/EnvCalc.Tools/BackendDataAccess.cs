@@ -13,14 +13,20 @@ using Prozess = EnvCalc.BusinessObjects.Prozess;
 
 namespace EnvCalc.Tools
 {
+    /// <summary>
+    /// Zentrale Stelle zum Erzeugen und Ansprechen des Backends mithilfe definierter Funktionen
+    /// </summary>
     public class BackendDataAccess : IBackendDataAccess
     {
         private readonly HttpClient _client;
         private static readonly string _baseUri = "https://envcalc.z-core.de";
 
+        /// <summary>
+        /// Zentrale Instanz zum Aufrufen des Backends
+        /// </summary>
         public static IBackendDataAccess Instance { get; set; }
 
-        public BackendDataAccess()
+        private BackendDataAccess()
         {
             _client = new HttpClient
             {
@@ -32,6 +38,7 @@ namespace EnvCalc.Tools
                 "ZW52Y2FsYzohb3A3Tl45QWhYbXE0QE9FdXFeTjM5aXU3Wkt5SFEwRmFBZ2dqSVpH");
         }
 
+        /// <inheritdoc cref="IBackendDataAccess.GetAllExchangesAsync"/>
         public async Task<List<Exchange>> GetAllExchangesAsync()
         {
             var response = await CallWebservice("exchanges", HttpMethod.Get);
@@ -39,6 +46,7 @@ namespace EnvCalc.Tools
             return result!.Select(res => new Exchange { Name = res }).ToList();
         }
 
+        /// <inheritdoc cref="IBackendDataAccess.GetAllProzessberechnungen"/>
         public async Task<List<Prozess>> GetAllProzessberechnungen()
         {
             var response = await CallWebservice("rootEntity", HttpMethod.Get);
@@ -46,6 +54,7 @@ namespace EnvCalc.Tools
             return result.ToList();
         }
 
+        /// <inheritdoc cref="IBackendDataAccess.GetAllProdukteAsync"/>
         public async Task<List<Produkt>> GetAllProdukteAsync()
         {
             var response = await CallWebservice("products", HttpMethod.Get);
@@ -53,6 +62,7 @@ namespace EnvCalc.Tools
             return result.ToList();
         }
 
+        /// <inheritdoc cref="IBackendDataAccess.PostProduktAsync"/>
         public async Task<bool> PostProduktAsync(Produkt produkt)
         {
             var response = await _client.PostAsJsonAsync("product", produkt);
@@ -65,6 +75,10 @@ namespace EnvCalc.Tools
             return await _client.SendAsync(requestMessage);
         }
 
+        /// <summary>
+        /// Erzeugt für die Anwendung einen neuen <see cref="IBackendDataAccess"/> zum zentralen Aufruf
+        /// </summary>
+        /// <exception cref="ApplicationException"/>
         public static void ErzeugeInstanz()
         {
             if (Instance is not null)
