@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Data;
-using AsyncAwaitBestPractices.MVVM;
 using Catel.Data;
 using Catel.MVVM;
 using EnvCalc.BusinessObjects;
@@ -36,8 +35,8 @@ namespace EnvCalc.Frontend.ViewModels
             set => SetValue(FilteredProperty, value);
         }
 
-        public IAsyncCommand ProzesseLadenCommand { get; private set; }
-        public IAsyncCommand AktualisierenCommand { get; private set; }
+        public ICatelCommand ProzesseLadenCommand { get; private set; }
+        public ICatelCommand AktualisierenCommand { get; private set; }
 
         public string SuchText
         {
@@ -47,7 +46,7 @@ namespace EnvCalc.Frontend.ViewModels
                 SetValue(SuchTextProperty, value);
                 // Damit bei einer neuen Suche immer wieder die volle Liste angezeigt wird
                 // Das geht bestimmt smarter, aber zumindest funktioniert das
-                if (SuchText is not null && value is "" && ExchangeView is not null) 
+                if (SuchText is not null && value is "" && ExchangeView is not null)
                 {
                     ExchangeView.Filter = null;
                 }
@@ -62,12 +61,11 @@ namespace EnvCalc.Frontend.ViewModels
 
         public ExchangeViewModel()
         {
-            //HoleProzessliste();
-            AktualisierenCommand = new AsyncCommand(AktualisiereExchangeListeAsync, CanExecute);
-            ProzesseLadenCommand = new AsyncCommand(InitialisiereExchangeListeAsync, CanExecute);
+            AktualisierenCommand = new TaskCommand(AktualisiereExchangeListeAsync, CanExecute);
+            ProzesseLadenCommand = new TaskCommand(InitialisiereExchangeListeAsync, CanExecute);
         }
 
-        private bool CanExecute(object arg)
+        private bool CanExecute()
         {
             return !IsBusy;
         }
