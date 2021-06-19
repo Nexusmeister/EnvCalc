@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace EnvCalc.Tools
 {
-    public class Settings
+    public static class Settings
     {
         public static AppSettings GeladeneEinstellungen { get; set; }
         private static readonly string Settingspfad = AppSettings.AppDataPfad + @"\settings.json";

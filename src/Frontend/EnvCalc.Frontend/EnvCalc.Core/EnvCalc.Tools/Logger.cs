@@ -62,7 +62,7 @@ namespace EnvCalc.Tools
         private void WriteExceptionToFile(string level, LogEvent log)
         {
             var sw = File.AppendText(AppSettings.Loggerpfad);
-            sw.WriteLine($"[{level}] [{log.Timestamp.ToString()}] {log.Exception}");
+            sw.WriteLine($"[{level}] [{log.Timestamp}] {log.Exception}");
             sw.Close();
         }
     }
