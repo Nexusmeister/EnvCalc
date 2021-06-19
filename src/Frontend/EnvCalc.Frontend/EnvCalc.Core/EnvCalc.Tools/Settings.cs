@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using EnvCalc.BusinessObjects.Enums;
-using Microsoft.VisualBasic.FileIO;
 using Newtonsoft.Json;
 
 namespace EnvCalc.Tools
