@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Data;
-using AsyncAwaitBestPractices.MVVM;
 using Catel.Data;
 using Catel.MVVM;
 using EnvCalc.BusinessObjects;
@@ -43,8 +41,8 @@ namespace EnvCalc.Frontend.ViewModels
             set => SetValue(SelectedItemProperty, value);
         }
 
-        public IAsyncCommand ProzesseLadenCommand { get; private set; }
-        public IAsyncCommand AktualisierenCommand { get; private set; }
+        public ICatelCommand ProzesseLadenCommand { get; private set; }
+        public ICatelCommand AktualisierenCommand { get; private set; }
 
         public string SuchText
         {
@@ -70,14 +68,14 @@ namespace EnvCalc.Frontend.ViewModels
         public RootEntityViewModel()
         {
             //HoleProzessliste();
-            AktualisierenCommand = new AsyncCommand(AktualisiereProzessListeAsync, KannAktualisieren);
-            ProzesseLadenCommand = new AsyncCommand(InitialisiereProzessListeAsync, KannAktualisieren);
+            AktualisierenCommand = new TaskCommand(AktualisiereProzessListeAsync, KannAktualisieren);
+            ProzesseLadenCommand = new TaskCommand(InitialisiereProzessListeAsync, KannAktualisieren);
         }
 
         /// <summary>
         /// Method to check whether the Edit command can be executed.
         /// </summary>
-        private bool KannAktualisieren(object arg)
+        private bool KannAktualisieren()
         {
             return !IsBusy;
         }

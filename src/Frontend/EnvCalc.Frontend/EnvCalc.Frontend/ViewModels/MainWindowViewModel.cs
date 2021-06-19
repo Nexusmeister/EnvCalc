@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows.Input;
 using Catel.Data;
 using Catel.MVVM;
 using EnvCalc.Frontend.Commands;
@@ -16,7 +15,7 @@ namespace EnvCalc.Frontend.ViewModels
             set => SetValue(IconProperty, value);
         }
 
-        public ICommand CloseCommand { get; set; }
+        public ICatelCommand CloseCommand { get; set; }
         public Action Close { get; set; }
 
         public static readonly PropertyData IconProperty = RegisterProperty(nameof(IconPath), typeof(string));
