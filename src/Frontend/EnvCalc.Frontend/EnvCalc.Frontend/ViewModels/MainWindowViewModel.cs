@@ -16,7 +16,7 @@ namespace EnvCalc.Frontend.ViewModels
             set => SetValue(IconProperty, value);
         }
 
-        public ICommand CloseCommand { get; set; }
+        public ICatelCommand CloseCommand { get; set; }
         public Action Close { get; set; }
 
         public static readonly PropertyData IconProperty = RegisterProperty(nameof(IconPath), typeof(string));
