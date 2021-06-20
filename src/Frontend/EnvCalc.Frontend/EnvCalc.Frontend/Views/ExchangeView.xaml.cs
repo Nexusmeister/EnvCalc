@@ -1,6 +1,4 @@
-﻿using Catel.MVVM;
-using Catel.Windows.Controls;
-using EnvCalc.Frontend.ViewModels;
+﻿using Catel.Windows.Controls;
 
 namespace EnvCalc.Frontend.Views
 {
