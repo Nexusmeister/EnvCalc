@@ -23,10 +23,14 @@ namespace EnvCalc.Frontend.ViewModels
             set => SetValue(IstLadekreisSichtbarProperty, value);
         }
 
-        protected void WechselArbeitsstatus()
+        protected void WechselArbeitsstatus(string message = null)
         {
             IsBusy = !IsBusy;
             IstLadekreisSichtbar = !IstLadekreisSichtbar;
+            if (!string.IsNullOrWhiteSpace(message))
+            {
+                // Do something
+            }
         }
 
         private static readonly PropertyData IsBusyProperty = RegisterProperty(nameof(IsBusy), typeof(bool));

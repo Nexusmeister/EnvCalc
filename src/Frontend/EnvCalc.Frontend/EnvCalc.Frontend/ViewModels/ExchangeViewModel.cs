@@ -103,7 +103,7 @@ namespace EnvCalc.Frontend.ViewModels
                 ExchangeView = CollectionViewSource.GetDefaultView(ExchangeListe);
 
                 ExchangeView.Filter = SucheExchange;
-                WechselArbeitsstatus();
+                WechselArbeitsstatus($"{liste.Count} Exchanges geladen.");
             }
             catch (Exception e)
             {
