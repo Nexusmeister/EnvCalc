@@ -41,6 +41,12 @@ namespace EnvCalc.Frontend.ViewModels
             set => SetValue(SelectedProduktProperty, value);
         }
 
+        public Prozess SelectedProzess 
+        {
+            get => GetValue<Prozess>(SelectedProzessProperty);
+            set => SetValue(SelectedProzessProperty, value);
+        }
+
         public ICollectionView ProduktView
         {
             get => GetValue<ICollectionView>(FilteredProperty);
@@ -190,5 +196,8 @@ namespace EnvCalc.Frontend.ViewModels
 
         public static readonly PropertyData SelectedProduktProperty =
             RegisterProperty(nameof(SelectedProdukt), typeof(Produkt));
+
+        public static readonly PropertyData SelectedProzessProperty =
+            RegisterProperty(nameof(SelectedProzess), typeof(Prozess));
     }
 }
