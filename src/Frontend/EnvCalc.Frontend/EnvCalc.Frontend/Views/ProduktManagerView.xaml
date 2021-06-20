@@ -9,6 +9,7 @@
              xmlns:produktManager="clr-namespace:EnvCalc.BusinessObjects.ProduktManager;assembly=EnvCalc.BusinessObjects"
              xmlns:gif="http://wpfanimatedgif.codeplex.com"
              xmlns:catel="http://schemas.catelproject.com"
+             xmlns:converter="clr-namespace:EnvCalc.Frontend.CustomControls.Converter"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
@@ -24,14 +25,15 @@
 
     <catel:UserControl.Resources>
         <catel:BooleanToHidingVisibilityConverter x:Key="BooleanToHidingVisibilityConverter" />
+        <converter:ProduktToSingleStringConverter x:Key="ProduktToSingleStringConverter"/>
     </catel:UserControl.Resources>
 
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition MinWidth="250" Width="400"/>
+            <ColumnDefinition MinWidth="350" Width="400" MaxWidth="1000"/>
             <ColumnDefinition Width="5"/>
-            <ColumnDefinition/>
+            <ColumnDefinition MinWidth="600"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -96,16 +98,33 @@
                Height="75"
                Visibility="{Binding IstLadekreisSichtbar, 
                             Converter={StaticResource BooleanToHidingVisibilityConverter}}"/>
-        
+
         <GridSplitter Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Width="5" HorizontalAlignment="Stretch"/>
+        <Label Grid.Row="0" Grid.Column="2" 
+               FontStyle="Italic"
+               Content="{Binding SelectedProdukt, 
+            Converter={StaticResource ProduktToSingleStringConverter}}"/>
 
         <Grid Grid.Row="1" Grid.Column="2">
-            <ListBox Grid.Row="0"
-                     ItemsSource="{Binding SelectedProdukt}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition MinWidth="300"/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition MinWidth="350"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition MinHeight="250"/>
+                <RowDefinition Height="5"/>
+                <RowDefinition MinHeight="250"/>
+            </Grid.RowDefinitions>
+
+            <ListBox Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" x:Name="LbProzesse"
+                     ItemsSource="{Binding SelectedProdukt.Prozesse}"
+                     SelectionMode="Single"
+                     SelectedItem="{Binding SelectedProzess}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid Margin="0,2">
-                            <StackPanel Orientation="Vertical" Width="800" Margin="0,0,0,5">
+                            <StackPanel Orientation="Vertical" Margin="0,0,0,5">
                                 <TextBlock x:Name="subHeaderText" 
                                            FontSize="16" 
                                            TextWrapping="Wrap" 
@@ -124,6 +143,60 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
+
+            <GridSplitter Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" Width="5" HorizontalAlignment="Stretch"
+                          ResizeDirection="Columns"
+                          ResizeBehavior="PreviousAndNext"
+                          />
+
+            <ListBox x:Name="LbInputs"
+                Grid.Row="0" Grid.Column="2"
+                Background="LightGray"
+                ItemsSource="{Binding SelectedProzess.Inputs}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="0,2">
+                            <StackPanel Orientation="Vertical" Margin="0,0,0,5">
+                                <TextBlock x:Name="subHeaderText" 
+                                           FontSize="16" 
+                                           TextWrapping="Wrap" 
+                                           Foreground="Black"
+                                           Text="{Binding Name}" />
+                                <TextBlock Margin="20,0,0,0" Text="{Binding Unit,
+                                           StringFormat='Einheit: {0}'}"/>
+                                <TextBlock Margin="20,0,0,0" Text="{Binding Amount,
+                                           StringFormat='Menge: {0}'}"/>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <GridSplitter Grid.Column="2" Grid.Row="1" HorizontalAlignment="Stretch" />
+
+            <ListBox x:Name="LbOutputs"
+                     Grid.Row="2" Grid.Column="2"
+                     Background="#e8e8e8"
+                     ItemsSource="{Binding SelectedProzess.Outputs}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="0,2">
+                            <StackPanel Orientation="Vertical" Margin="0,0,0,5">
+                                <TextBlock x:Name="subHeaderText" 
+                                           FontSize="16" 
+                                           TextWrapping="Wrap" 
+                                           Foreground="Black"
+                                           Text="{Binding Name}" />
+                                <TextBlock Margin="20,0,0,0" Text="{Binding Unit,
+                                           StringFormat='Einheit: {0}'}"/>
+                                <TextBlock Margin="20,0,0,0" Text="{Binding Amount,
+                                           StringFormat='Menge: {0}'}"/>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </Grid>
+        
     </Grid>
 </catel:UserControl>
