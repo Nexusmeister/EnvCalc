@@ -111,6 +111,12 @@ namespace EnvCalc.Frontend.ViewModels
                 ProzessListe = liste.ToObservableCollection();
                 CollectionView = CollectionViewSource.GetDefaultView(ProzessListe);
 
+                if (CollectionView.Filter is null)
+                {
+                    WechselArbeitsstatus();
+                    return;
+                }
+
                 CollectionView.Filter = SucheProzess;
                 WechselArbeitsstatus();
             }

@@ -1,11 +1,11 @@
-﻿using System.Windows.Controls;
+﻿using Catel.Windows.Controls;
 
 namespace EnvCalc.Frontend.Views
 {
     /// <summary>
     /// Interaction logic for ProduktManagerView.xaml
     /// </summary>
-    public partial class ProduktManagerView : Page
+    public partial class ProduktManagerView : UserControl
     {
         public ProduktManagerView()
         {

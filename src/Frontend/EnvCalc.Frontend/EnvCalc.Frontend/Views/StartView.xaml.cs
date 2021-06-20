@@ -1,11 +1,11 @@
-﻿using System.Windows.Controls;
+﻿using Catel.Windows.Controls;
 
 namespace EnvCalc.Frontend.Views
 {
     /// <summary>
     /// Interaction logic for StartView.xaml
     /// </summary>
-    public partial class StartView : Page
+    public partial class StartView : UserControl
     {
         public StartView()
         {

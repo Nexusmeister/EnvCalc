@@ -79,7 +79,7 @@ namespace EnvCalc.Frontend.ViewModels
         {
             var dependencyResolver = this.GetDependencyResolver();
             var uiVisualizerService = dependencyResolver.Resolve<IUIVisualizerService>();
-            var x = await uiVisualizerService.ShowDialogAsync(new ExchangeViewModel(), CompletedProc);
+            var x = await uiVisualizerService.ShowDialogAsync(this, CompletedProc);
 
             if (x.GetValueOrDefault())
             {
