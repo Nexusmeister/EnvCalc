@@ -75,10 +75,17 @@ namespace EnvCalc.Frontend.ViewModels
         /// </summary>
         private async Task AktualisiereExchangeListeAsync()
         {
-            ExchangeListe.Clear();
-            ExchangeView.Refresh();
+            try
+            {
+                ExchangeListe.Clear();
+                ExchangeView.Refresh();
 
-            await HoleExchangelisteAsync();
+                await HoleExchangelisteAsync();
+            }
+            catch (Exception e1)
+            {
+                Logger.Instanz.WriteException("Fehler beim Aktualisieren der Exchanges", LogEventLevel.Error, e1);
+            }
         }
 
         private async Task InitialisiereExchangeListeAsync()
