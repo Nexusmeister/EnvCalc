@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:controls="clr-namespace:EnvCalc.Frontend.CustomControls"
         xmlns:vm="clr-namespace:EnvCalc.Frontend.ViewModels"
         xmlns:catel="http://schemas.catelproject.com"
         SizeToContent="Manual"
@@ -44,8 +43,6 @@
                 </MenuItem>
             </Menu>
         </DockPanel>
-        <!--<Label Content="Produzent"/>
-        <Label Content="Produzent"/>-->
         <TabControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
             <TabItem Header="Start">
                 <Frame Source="Views/StartView.xaml"/>

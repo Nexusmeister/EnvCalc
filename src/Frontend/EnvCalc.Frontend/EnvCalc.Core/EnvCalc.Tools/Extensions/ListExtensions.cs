@@ -13,7 +13,7 @@ namespace EnvCalc.Tools.Extensions
         /// <returns></returns>
         public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> liste)
         {
-            return new ObservableCollection<T>(liste);
+            return new(liste);
         }
     }
 }
