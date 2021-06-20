@@ -48,7 +48,7 @@
             </TabItem>
         </TabControl>
         <StatusBar Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
-            <StatusBarItem Content="Test"/>
+            <StatusBarItem Content="{Binding StatusbarContent}"/>
         </StatusBar>
     </Grid>
 </Window>

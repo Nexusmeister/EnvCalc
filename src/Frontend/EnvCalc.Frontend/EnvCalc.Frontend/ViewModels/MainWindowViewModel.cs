@@ -15,6 +15,12 @@ namespace EnvCalc.Frontend.ViewModels
             set => SetValue(IconProperty, value);
         }
 
+        public string StatusbarContent
+        {
+            get => GetValue<string>(StatusBarContentProperty);
+            set => SetValue(StatusBarContentProperty, value);
+        }
+
         public ICatelCommand CloseCommand { get; set; }
         public Action Close { get; set; }
 
@@ -24,6 +30,7 @@ namespace EnvCalc.Frontend.ViewModels
         {
             IconPath = "Ressourcen/envCalc_icon.png";
             CloseCommand = new Command(SchliesseAnwendung);
+            StatusbarContent = "Bereit.";
         }
 
         private void SchliesseAnwendung()
@@ -35,5 +42,8 @@ namespace EnvCalc.Frontend.ViewModels
         {
             return true;
         }
+
+        public static readonly PropertyData StatusBarContentProperty =
+            RegisterProperty(nameof(StatusbarContent), typeof(string));
     }
 }
