@@ -3,11 +3,11 @@
 namespace EnvCalc.Frontend.Views
 {
     /// <summary>
-    /// Interaction logic for RootEntityView.xaml
+    /// Interaction logic for ProduktManagerView.xaml
     /// </summary>
-    public partial class RootEntityView : UserControl
+    public partial class ProduktManagerView : UserControl
     {
-        public RootEntityView()
+        public ProduktManagerView()
         {
             InitializeComponent();
         }

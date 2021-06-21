@@ -1,19 +1,26 @@
-﻿<Page x:Class="EnvCalc.Frontend.Views.RootEntityView"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:EnvCalc.Frontend.Views"
-      xmlns:viewModels="clr-namespace:EnvCalc.Frontend.ViewModels"
-      xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
-      xmlns:businessObjects="clr-namespace:EnvCalc.BusinessObjects;assembly=EnvCalc.BusinessObjects"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="RootEntityView">
+﻿<catel:UserControl x:Class="EnvCalc.Frontend.Views.RootEntityView"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                   xmlns:local="clr-namespace:EnvCalc.Frontend.Views"
+                   xmlns:viewModels="clr-namespace:EnvCalc.Frontend.ViewModels"
+                   xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+                   xmlns:businessObjects="clr-namespace:EnvCalc.BusinessObjects;assembly=EnvCalc.BusinessObjects"
+                   xmlns:converter="clr-namespace:EnvCalc.Frontend.CustomControls.Converter"
+                   xmlns:gif="http://wpfanimatedgif.codeplex.com"
+                   xmlns:catel="http://schemas.catelproject.com"
+                   mc:Ignorable="d" 
+                   d:DesignHeight="450" d:DesignWidth="800">
 
-    <Page.DataContext>
+    <catel:UserControl.DataContext>
         <viewModels:RootEntityViewModel/>
-    </Page.DataContext>
+    </catel:UserControl.DataContext>
+
+    <catel:UserControl.Resources>
+        <converter:BooleanToInputOutputConverter x:Key="BooleanToInputOutputConverter"/>
+        <catel:BooleanToHidingVisibilityConverter x:Key="BooleanToHidingVisibilityConverter" />
+    </catel:UserControl.Resources>
 
     <b:Interaction.Triggers>
         <b:EventTrigger EventName="Loaded">
@@ -51,6 +58,7 @@
                     Width="75" Height="20"
                     Margin="0,0,0,2"
                     Content="Aktualisieren" 
+                    Command="{Binding AktualisierenCommand}"
                     />
         </Grid>
         <!--<TextBox Grid.Row="0" Grid.Column="0" Height="20" BorderThickness="1,1,1,0" />-->
@@ -72,7 +80,12 @@
             </ListBox.ItemTemplate>
         </ListBox>
         <GridSplitter Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Width="5" HorizontalAlignment="Stretch"/>
-        <Label Grid.Row="0" Grid.Column="2" Content="Ausstoß je Einheit" FontSize="14" FontWeight="Bold"></Label>
+        <Label Grid.Row="0" Grid.Column="2" Content="Ausstoß je Einheit" FontSize="14" FontWeight="Bold"/>
+        <Image gif:ImageBehavior.AnimatedSource="../Ressourcen/circle_loading.gif" Grid.Row="1" Grid.Column="0" 
+               gif:ImageBehavior.AutoStart="True" 
+               gif:ImageBehavior.RepeatBehavior="Forever"
+               Height="75"
+               Visibility="{Binding IstLadekreisSichtbar, Converter={StaticResource BooleanToHidingVisibilityConverter}}"/>
         <Grid Grid.Row="1" Grid.Column="2">
             <ListBox ItemsSource="{Binding SelectedProzess.Exchanges}">
                 <ListBox.ItemTemplate>
@@ -88,6 +101,11 @@
                                            StringFormat='Einheit: {0}'}"/>
                                 <TextBlock Margin="20,0,0,0" Text="{Binding Amount,
                                            StringFormat='Menge: {0}'}"/>
+                                <TextBlock Margin="20,0,0,0" 
+                                           Text="{Binding Input,
+                                           Converter={StaticResource BooleanToInputOutputConverter}}"
+                                           Foreground="Gray"
+                                           FontSize="10"/>
                             </StackPanel>
                         </Grid>
                     </DataTemplate>
@@ -95,4 +113,4 @@
             </ListBox>
         </Grid>
     </Grid>
-</Page>
+</catel:UserControl>

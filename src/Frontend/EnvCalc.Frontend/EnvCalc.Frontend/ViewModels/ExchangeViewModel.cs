@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Data;
-using AsyncAwaitBestPractices.MVVM;
 using Catel.Data;
 using Catel.MVVM;
 using EnvCalc.BusinessObjects;
@@ -13,7 +12,7 @@ using Serilog.Events;
 
 namespace EnvCalc.Frontend.ViewModels
 {
-    public class ExchangeViewModel : ViewModelBase
+    public class ExchangeViewModel : BaseViewModel
     {
         /// <summary>
         /// Gets the title of the view model.
@@ -36,14 +35,8 @@ namespace EnvCalc.Frontend.ViewModels
             set => SetValue(FilteredProperty, value);
         }
 
-        public bool IsBusy
-        {
-            get => GetValue<bool>(IsBusyProperty);
-            set => SetValue(IsBusyProperty, value);
-        }
-
-        public IAsyncCommand ProzesseLadenCommand { get; private set; }
-        public IAsyncCommand AktualisierenCommand { get; private set; }
+        public ICatelCommand ProzesseLadenCommand { get; private set; }
+        public ICatelCommand AktualisierenCommand { get; private set; }
 
         public string SuchText
         {
@@ -53,7 +46,7 @@ namespace EnvCalc.Frontend.ViewModels
                 SetValue(SuchTextProperty, value);
                 // Damit bei einer neuen Suche immer wieder die volle Liste angezeigt wird
                 // Das geht bestimmt smarter, aber zumindest funktioniert das
-                if (SuchText is not null && value is "" && ExchangeView is not null) 
+                if (SuchText is not null && value is "" && ExchangeView is not null)
                 {
                     ExchangeView.Filter = null;
                 }
@@ -66,35 +59,17 @@ namespace EnvCalc.Frontend.ViewModels
             }
         }
 
-        /// <summary>
-        /// Register the UserAgreedToContinue property so it is known in the class.
-        /// </summary>
-        public static readonly PropertyData ExchangeListeProperty = 
-            RegisterProperty(nameof(ExchangeListe), typeof(ObservableCollection<Exchange>));
-
-        public static readonly PropertyData FilteredProperty =
-            RegisterProperty(nameof(ExchangeView), typeof(ICollectionView));
-
-        public static readonly PropertyData SuchTextProperty =
-            RegisterProperty(nameof(SuchText), typeof(string));
-
-        public static readonly PropertyData IsBusyProperty = RegisterProperty(nameof(IsBusy), typeof(bool));
-
         public ExchangeViewModel()
         {
-            //HoleProzessliste();
-            AktualisierenCommand = new AsyncCommand(AktualisiereExchangeListeAsync, _ => true);
-            ProzesseLadenCommand = new AsyncCommand(HoleExchangelisteAsync, _ => !IsBusy);
+            AktualisierenCommand = new TaskCommand(AktualisiereExchangeListeAsync, CanExecute);
+            ProzesseLadenCommand = new TaskCommand(InitialisiereExchangeListeAsync, CanExecute);
         }
 
-        /// <summary>
-        /// Method to check whether the Edit command can be executed.
-        /// </summary>
-        private bool KannAktualisieren()
+        private bool CanExecute()
         {
             return !IsBusy;
         }
-
+        
         /// <summary>
         /// Method to invoke when the Edit command is executed.
         /// </summary>
@@ -106,16 +81,29 @@ namespace EnvCalc.Frontend.ViewModels
             await HoleExchangelisteAsync();
         }
 
+        private async Task InitialisiereExchangeListeAsync()
+        {
+            if (IstInitialisiert)
+            {
+                return;
+            }
+
+            await HoleExchangelisteAsync();
+            IstInitialisiert = true;
+        }
+
 
         private async Task HoleExchangelisteAsync()
         {
             try
             {
+                WechselArbeitsstatus();
                 var liste = await BackendDataAccess.Instance.GetAllExchangesAsync();
                 ExchangeListe = liste.ToObservableCollection();
                 ExchangeView = CollectionViewSource.GetDefaultView(ExchangeListe);
 
                 ExchangeView.Filter = SucheExchange;
+                WechselArbeitsstatus();
             }
             catch (Exception e)
             {
@@ -129,7 +117,7 @@ namespace EnvCalc.Frontend.ViewModels
                 };
 
                 ExchangeView = CollectionViewSource.GetDefaultView(ExchangeListe);
-                IsBusy = true;
+                IsBusy = false;
             }
         }
 
@@ -161,6 +149,17 @@ namespace EnvCalc.Frontend.ViewModels
 
             return ex.Name.Contains(suche, StringComparison.InvariantCultureIgnoreCase);
         }
-        
+
+        /// <summary>
+        /// Register the UserAgreedToContinue property so it is known in the class.
+        /// </summary>
+        public static readonly PropertyData ExchangeListeProperty =
+            RegisterProperty(nameof(ExchangeListe), typeof(ObservableCollection<Exchange>));
+
+        public static readonly PropertyData FilteredProperty =
+            RegisterProperty(nameof(ExchangeView), typeof(ICollectionView));
+
+        public static readonly PropertyData SuchTextProperty =
+            RegisterProperty(nameof(SuchText), typeof(string));
     }
 }

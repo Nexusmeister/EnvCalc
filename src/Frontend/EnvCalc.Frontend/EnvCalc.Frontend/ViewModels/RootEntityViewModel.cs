@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Data;
-using AsyncAwaitBestPractices.MVVM;
 using Catel.Data;
 using Catel.MVVM;
 using EnvCalc.BusinessObjects;
@@ -13,7 +12,7 @@ using Serilog.Events;
 
 namespace EnvCalc.Frontend.ViewModels
 {
-    public class RootEntityViewModel : ViewModelBase
+    public class RootEntityViewModel : BaseViewModel
     {
         /// <summary>
         /// Gets the title of the view model.
@@ -36,20 +35,14 @@ namespace EnvCalc.Frontend.ViewModels
             set => SetValue(FilteredProperty, value);
         }
 
-        public bool IsBusy
-        {
-            get => GetValue<bool>(IsBusyProperty);
-            set => SetValue(IsBusyProperty, value);
-        }
-
         public Prozess SelectedProzess
         {
             get => GetValue<Prozess>(SelectedItemProperty);
             set => SetValue(SelectedItemProperty, value);
         }
 
-        public IAsyncCommand ProzesseLadenCommand { get; private set; }
-        public IAsyncCommand AktualisierenCommand { get; private set; }
+        public ICatelCommand ProzesseLadenCommand { get; private set; }
+        public ICatelCommand AktualisierenCommand { get; private set; }
 
         public string SuchText
         {
@@ -72,28 +65,11 @@ namespace EnvCalc.Frontend.ViewModels
             }
         }
 
-        /// <summary>
-        /// Register the UserAgreedToContinue property so it is known in the class.
-        /// </summary>
-        public static readonly PropertyData ProzessListeProperty =
-            RegisterProperty(nameof(ProzessListe), typeof(ObservableCollection<Prozess>));
-
-        public static readonly PropertyData FilteredProperty =
-            RegisterProperty(nameof(CollectionView), typeof(ICollectionView));
-
-        public static readonly PropertyData SuchTextProperty =
-            RegisterProperty(nameof(SuchText), typeof(string));
-
-        public static readonly PropertyData IsBusyProperty = RegisterProperty(nameof(IsBusy), typeof(bool));
-
-        public static readonly PropertyData SelectedItemProperty =
-            RegisterProperty(nameof(SelectedProzess), typeof(Prozess));
-
         public RootEntityViewModel()
         {
             //HoleProzessliste();
-            AktualisierenCommand = new AsyncCommand(AktualisiereProzessListeAsync, _ => true);
-            ProzesseLadenCommand = new AsyncCommand(HoleProzessListeAsync, _ => !IsBusy);
+            AktualisierenCommand = new TaskCommand(AktualisiereProzessListeAsync, KannAktualisieren);
+            ProzesseLadenCommand = new TaskCommand(InitialisiereProzessListeAsync, KannAktualisieren);
         }
 
         /// <summary>
@@ -115,16 +91,34 @@ namespace EnvCalc.Frontend.ViewModels
             await HoleProzessListeAsync();
         }
 
+        private async Task InitialisiereProzessListeAsync()
+        {
+            if (IstInitialisiert)
+            {
+                return;
+            }
+
+            await HoleProzessListeAsync();
+            IstInitialisiert = true;
+        }
 
         private async Task HoleProzessListeAsync()
         {
             try
             {
+                WechselArbeitsstatus();
                 var liste = await BackendDataAccess.Instance.GetAllProzessberechnungen();
                 ProzessListe = liste.ToObservableCollection();
                 CollectionView = CollectionViewSource.GetDefaultView(ProzessListe);
 
+                if (CollectionView.Filter is null)
+                {
+                    WechselArbeitsstatus();
+                    return;
+                }
+
                 CollectionView.Filter = SucheProzess;
+                WechselArbeitsstatus();
             }
             catch (Exception e)
             {
@@ -138,7 +132,7 @@ namespace EnvCalc.Frontend.ViewModels
                 };
 
                 CollectionView = CollectionViewSource.GetDefaultView(ProzessListe);
-                IsBusy = true;
+                IsBusy = false;
             }
         }
 
@@ -171,5 +165,19 @@ namespace EnvCalc.Frontend.ViewModels
             return prozess.Name.Contains(suche, StringComparison.InvariantCultureIgnoreCase);
         }
 
+        /// <summary>
+        /// Register the UserAgreedToContinue property so it is known in the class.
+        /// </summary>
+        public static readonly PropertyData ProzessListeProperty =
+            RegisterProperty(nameof(ProzessListe), typeof(ObservableCollection<Prozess>));
+
+        public static readonly PropertyData FilteredProperty =
+            RegisterProperty(nameof(CollectionView), typeof(ICollectionView));
+
+        public static readonly PropertyData SuchTextProperty =
+            RegisterProperty(nameof(SuchText), typeof(string));
+
+        public static readonly PropertyData SelectedItemProperty =
+            RegisterProperty(nameof(SelectedProzess), typeof(Prozess));
     }
 }
