@@ -1,10 +1,9 @@
-package de.crystalcase.envcalc.entities;
+package de.crystalcase.envcalc.entities.probas;
 
 import lombok.Getter;
 import lombok.Setter;
 import nonapi.io.github.classgraph.json.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.elasticsearch.annotations.Field;
 
 @Getter
 @Setter
