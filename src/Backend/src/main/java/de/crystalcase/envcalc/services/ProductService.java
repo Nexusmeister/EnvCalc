@@ -2,8 +2,6 @@ package de.crystalcase.envcalc.services;
 
 import de.crystalcase.envcalc.entities.Product;
 import de.crystalcase.envcalc.repositories.ProductRepository;
-import org.joda.time.DateTime;
-import org.joda.time.Instant;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;

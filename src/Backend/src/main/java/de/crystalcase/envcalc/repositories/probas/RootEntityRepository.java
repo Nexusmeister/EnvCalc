@@ -4,7 +4,6 @@ import de.crystalcase.envcalc.entities.probas.RootEntity;
 import de.crystalcase.envcalc.enums.RootEntityTypes;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
-import org.springframework.data.repository.Repository;
 
 public interface RootEntityRepository  extends ElasticsearchRepository<RootEntity, String> {
 
