@@ -4,7 +4,7 @@ on:
   workflow_dispatch :
 
 jobs:
-  BuildAndPublish:
+  Build:
     runs-on: windows-latest
     defaults:
       run:
@@ -30,6 +30,7 @@ jobs:
         path: D:\a\EnvCalc\EnvCalc\src\Frontend\EnvCalc.Frontend\EnvCalc.Frontend\bin\Release\net5.0-windows\publish\
 
   TestAndPublish:
+    needs: Build
     runs-on: ubuntu-latest
     steps:
     - name: Download EnvCalc Artifact
