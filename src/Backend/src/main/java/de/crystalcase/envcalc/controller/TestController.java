@@ -29,11 +29,11 @@ public class TestController {
     @ResponseBody
     private String workflow(){ return "workflow successful"; }
 
-    @GetMapping(value = "rawRoot")
+    @GetMapping(value = "/rawRoot")
     @ResponseBody
     private SearchHits<RootEntity> rawRoot() { return rootEntityService.getRawUniqueRootEntities(); }
 
-    @GetMapping(value = "/procestest")
+    @GetMapping(value = "/rawProcess")
     @ResponseBody
     private List<Process> rawProcess() { return processRepository.findAll(); }
 
