@@ -4,10 +4,8 @@ on:
   workflow_dispatch :
 
 jobs:
-  TestAndPublish:
-
-    runs-on: ubuntu-latest
-
+  Build:
+    runs-on: windows-latest
     defaults:
       run:
         working-directory: ./src/Frontend/EnvCalc.Frontend/EnvCalc.Frontend/
@@ -22,8 +20,25 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     - name: Publish
-      run: dotnet publish -c Release --no-restore
-      
+      run: dotnet publish -c Release --no-restore # Später wieder einkommentieren --self-contained
+    - name: Upload EnvCalc Build Artifact
+      uses: actions/upload-artifact@v2.2.2
+      with:
+        # Artifact name
+        name: EnvCalc_Artifact
+        # A file, directory or wildcard pattern that describes what to upload
+        path: D:\a\EnvCalc\EnvCalc\src\Frontend\EnvCalc.Frontend\EnvCalc.Frontend\bin\Release\net5.0-windows\publish\
+
+  TestAndPublish:
+    needs: Build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download EnvCalc Artifact
+      uses: actions/download-artifact@v2.0.8
+      with:
+          # Artifact name
+          name: EnvCalc_Artifact
+          path: artifacts/
     - name: Get current date
       id: date
       run: echo "::set-output name=date::v$(date +'%Y.%m.%d.%H%M')"
@@ -44,7 +59,7 @@ jobs:
       uses: thedoctor0/zip-release@master
       with:
         filename: envcalc_frontend.zip
-        path: D:\a\EnvCalc\EnvCalc\src\Frontend\EnvCalc.Frontend\EnvCalc.Frontend\bin\Release\net5.0-windows\
+        #path: D:\a\EnvCalc\EnvCalc\src\Frontend\EnvCalc.Frontend\EnvCalc.Frontend\bin\Release\net5.0-windows\
     - name: Upload release asset
       uses: actions/upload-release-asset@v1
       env:
