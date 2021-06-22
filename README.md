@@ -25,3 +25,28 @@ Studiengang Wirtschaftsinformatik
 - Kenntnisse mit C#, XAML
 
 ### Backend
+- [JDK 16](https://www.oracle.com/java/technologies/javase-jdk16-downloads.html) (Jede JDK ab 11 möglich)
+- Entwicklungsumgebung für Java Programmierung:
+  - [JetBrains IntelliJ IDEA](https://www.jetbrains.com/de-de/idea/download/#section=windows) (Community Edition ist kostenlos, Ultimate Edition durch Hochschule kostenlos)
+- [Elasticsearch](https://www.elastic.co/de/downloads/elasticsearch)
+  - Optional: [Kibana](https://www.elastic.co/de/downloads/kibana)
+- Alternaitv:
+  - [Docker](https://www.docker.com/products/docker-desktop) (docker-compose.yml für Backend, Elastic und Kibana vorhanden)
+ 
+ 
+##### Mindestkentnisse
+- Kenntnisse in Java
+  - Keywords: Annotations, Generics
+- Kenntnisse mit Webanwendungen
+  - Keywords: HTTP-Requests, Requestparameter, Request/Responsebody, HTTP-Header
+
+#### Fortgeschritten
+- Kenntnisse mit Spring Boot
+  - Keywords: Spring Configuration, Spring Data, Bean Injection
+- Kenntnisse mit Elasticsearch
+
+#### State of the Art
+- Kenntnisse in Docker
+  - Keywords: Container, docker-compose
+
+Note: Fragen zum Backend an: viktorziegler99@live.de
