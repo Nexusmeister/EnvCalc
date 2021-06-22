@@ -117,7 +117,7 @@ namespace EnvCalc.Frontend.ViewModels
                 };
 
                 ExchangeView = CollectionViewSource.GetDefaultView(ExchangeListe);
-                IsBusy = false;
+                WechselArbeitsstatus();
             }
         }
 

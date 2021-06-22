@@ -132,7 +132,7 @@ namespace EnvCalc.Frontend.ViewModels
                 };
 
                 CollectionView = CollectionViewSource.GetDefaultView(ProzessListe);
-                IsBusy = false;
+                WechselArbeitsstatus();
             }
         }
 
