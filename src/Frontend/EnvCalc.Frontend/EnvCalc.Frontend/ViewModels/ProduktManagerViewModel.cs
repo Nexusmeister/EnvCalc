@@ -152,7 +152,7 @@ namespace EnvCalc.Frontend.ViewModels
                 };
 
                 ProduktView = CollectionViewSource.GetDefaultView(ProduktListe);
-                IsBusy = false;
+                WechselArbeitsstatus();
              }
         }
         
